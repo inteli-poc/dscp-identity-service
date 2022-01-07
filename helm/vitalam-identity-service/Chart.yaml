@@ -1,7 +1,7 @@
 apiVersion: v2
-name: vitalam-service-template
+name: vitalam-identity-service
 appVersion: '0.0.1'
-description: A Helm chart for vitalam-service-template
+description: A Helm chart for vitalam-identity-service
 version: '0.0.1'
 type: application
 maintainers:

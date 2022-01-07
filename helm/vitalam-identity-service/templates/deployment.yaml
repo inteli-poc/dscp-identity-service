@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "vitalam-service-template.fullname" . }}
+  name: {{ include "vitalam-identity-service.fullname" . }}
   labels:
-    {{- include "vitalam-service-template.labels" . | nindent 4 }}
+    {{- include "vitalam-identity-service.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      name: {{ include "vitalam-service-template.fullname" . }}
+      name: {{ include "vitalam-identity-service.fullname" . }}
   template:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        name: {{ include "vitalam-service-template.fullname" . }}
+        name: {{ include "vitalam-identity-service.fullname" . }}
     spec:
-      {{- include "vitalam-service-template.imagePullSecrets" . | indent 6 }}
+      {{- include "vitalam-identity-service.imagePullSecrets" . | indent 6 }}
       initContainers: []
 
       containers:
-        - name: {{ include "vitalam-service-template.fullname" . }}
+        - name: {{ include "vitalam-identity-service.fullname" . }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           livenessProbe:
@@ -34,5 +34,5 @@ spec:
             - name: PORT
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-service-template.fullname" . }}-config
+                  name: {{ include "vitalam-identity-service.fullname" . }}-config
                   key: port
