@@ -11,7 +11,7 @@ ENV NPM_CONFIG_LOGLEVEL ${LOGLEVEL}
 # Install base dependencies
 RUN npm -g install npm@latest
 
-WORKDIR /vitalam-service-template
+WORKDIR /vitalam-identity-service
 
 COPY . .
 RUN npm install --production
