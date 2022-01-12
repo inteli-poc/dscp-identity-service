@@ -6,5 +6,4 @@ coverage
 .env
 .vscode
 
-github_token
 helm/**/*.tgz
