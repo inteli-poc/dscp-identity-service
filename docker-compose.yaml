@@ -1,6 +1,20 @@
 version: '3'
 
 services:
+  vitalam-node:
+    image: ghcr.io/digicatapult/vitalam-node:v2.5.0
+    command: /bin/sh -c "
+      ./vitalam-node
+      --base-path /data/
+      --dev
+      --unsafe-ws-external
+      --unsafe-rpc-external
+      --rpc-cors all"
+    ports:
+      - 30333:30333
+      - 9944:9944
+      - 9933:9933
+    restart: on-failure
   postgres-data:
     image: postgis/postgis:9.6-2.5-alpine
     ports:
