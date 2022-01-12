@@ -8,6 +8,7 @@ config:
   logLevel: info
   dbName: vitalam
   dbPort: 5432
+  externalPostgresql: null
 image:
   repository: ghcr.io/digicatapult/vitalam-identity-service
   pullPolicy: IfNotPresent
