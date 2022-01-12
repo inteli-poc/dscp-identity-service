@@ -1,4 +1,4 @@
 image:
-  repository: 'vitalam-service-template'
+  repository: 'vitalam-identity-service'
   tag: 'latest'
   PullPolicy: Never

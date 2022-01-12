@@ -3,7 +3,7 @@ const { PORT, API_VERSION, API_MAJOR_VERSION } = require('../env')
 const apiDoc = {
   openapi: '3.0.3',
   info: {
-    title: 'ApiService',
+    title: 'IdentityService',
     version: API_VERSION,
   },
   servers: [
@@ -19,6 +19,9 @@ const apiDoc = {
       BadRequestError: {
         description: 'The request is invalid',
       },
+      ConflictError: {
+        description: 'This resource already exists',
+      },
       UnauthorizedError: {
         description: 'Access token is missing or invalid',
       },
@@ -26,8 +29,29 @@ const apiDoc = {
         description: 'An error occurred',
       },
     },
-    schemas: {},
-    securitySchemes: {},
+    schemas: {
+      Member: {
+        type: 'object',
+        properties: {
+          address: {
+            description: 'token of the member',
+            type: 'string',
+          },
+          alias: {
+            description: 'alias of the member',
+            type: 'string',
+          },
+        },
+        required: ['address', 'alias'],
+      },
+    },
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
   },
   paths: {},
 }

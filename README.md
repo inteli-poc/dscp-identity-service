@@ -1,29 +1,92 @@
-# vitalam-service-template
+# VITALam Identity Service
 
-Template repository for bootstrapping new VITALam services. Use this repo as a template in github when creating new `VITALam` services. When forked a new pull request will automatically be created in the new repository to apply templating. Before merging you should also give access to the forked repo the `GITHUB_TOKEN` organisation secret prior to merging. This will allow the release workflow to run successfully on merging.
+## Description
 
-## What this repo provides
+A `Node.js` API to support communication to the [Substrate-based](https://www.substrate.io/) [`vitalam-node`](https://github.com/digicatapult/vitalam-node) (via [`polkadot-js/api`](https://www.npmjs.com/package/@polkadot/api)) and an [`IPFS`](https://ipfs.io/) node.
 
-This repo provides:
+## Getting started
 
-- basic node.js project structure for a VITALam service
-- linting with VITALam prettier configuration
-- open-sourcing materials
-- Docker file
-- A simple helm chart for the service
-- A service with a healthcheck endpoint on `/health`
-- An OpenAPI doc and endpoints for `/swagger` and `/api-docs`
-- Testing apparatus using `mocha`, `chai` and `supertest`
-- Github workflows for testing and release
+First, ensure you're running the correct [version](.node-version) of `npm`, then install dependencies using:
+
+```
+npm install
+```
+
+The API requires instances of [`vitalam-node`](https://github.com/digicatapult/vitalam-node).
+To bring this up locally:
+
+### `vitalam-node`
+
+Clone [vitalam-node](https://github.com/digicatapult/vitalam-node) and follow the README to setup and build a local node. Then run the following in its root directory:
+
+```
+./target/release/vitalam-node --dev
+```
 
 ## Environment Variables
 
-`vitalam-service-template` is configured primarily using environment variables as follows:
+`vitalam-identity-service` is configured primarily using environment variables as follows:
 
-| variable                      | required | default | description                                                                                     |
-| :---------------------------- | :------: | :-----: | :---------------------------------------------------------------------------------------------- |
-| SERVICE_TYPE                  |    N     | `info`  | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`]            |
-| PORT                          |    N     | `3001`  | The port for the API to listen on                                                               |
-| LOG_LEVEL                     |    N     | `info`  | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`]            |
-| API_VERSION                   |    N     |    -    | API version                                                                                     |
-| API_MAJOR_VERSION             |    N     |    -    | API major version                                                                               |
+| variable                          | required |  default  | description                                                                                                          |
+|:----------------------------------| :------: |:---------:|:---------------------------------------------------------------------------------------------------------------------|
+| SERVICE_TYPE                      |    N     |  `info`   | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`]                                 |
+| PORT                              |    N     |  `3001`   | The port for the API to listen on                                                                                    |
+| LOG_LEVEL                         |    N     |  `info`   | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`]                                 |
+| API_VERSION                       |    N     |     -     | API version                                                                                                          |
+| API_MAJOR_VERSION                 |    N     |     -     | API major version                                                                                                    |
+| API_HOST                          |    Y     |     -     | The hostname of the `vitalam-node` the API should connect to                                                         |
+| API_PORT                          |    N     |  `9944`   | The port of the `vitalam-node` the API should connect to                                                             |
+| LOG_LEVEL                         |    N     |  `info`   | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`]                                 |
+| USER_URI                          |    Y     |     -     | The Substrate `URI` representing the private key to use when making `vitalam-node` transactions                      |
+| AUTH_JWKS_URI                     |    Y     |     -     | JSON Web Key Set containing public keys used by the Auth0 API e.g. `https://test.eu.auth0.com/.well-known/jwks.json` |
+| AUTH_AUDIENCE                     |    Y     |     -     | Identifier of the Auth0 API                                                                                          |
+| AUTH_ISSUER                       |    Y     |     -     | Domain of the Auth0 API e.g. `https://test.eu.auth0.com/`                                                            |
+| AUTH_TOKEN_URL                    |    Y     |     -     | Auth0 API endpoint that issues an Authorisation (Bearer) access token e.g. `https://test.auth0.com/oauth/token`      |
+| DB_HOST                           |    Y     |     -     | Hostname for the db                                                                                                  |
+| DB_PORT                           |    N     |   5432    | Port to connect to the db                                                                                            |
+| DB_NAME                           |    N     | `vitalam` | Name of the database to connect to                                                                                   |
+| DB_USERNAME                       |    Y     |     -     | Username to connect to the database with                                                                             |
+| DB_PASSWORD                       |    Y     |     -     | Password to connect to the database with                                                                             |
+
+## Running the API
+
+Having ensured dependencies are installed and running + the relevant environment variables are set, the API can be started in production mode with:
+
+```
+npm start
+```
+
+## API specification
+
+### Authenticated endpoints
+
+The rest of the endpoints in `vitalam-api` require authentication in the form of a header `'Authorization: Bearer YOUR_ACCESS_TOKEN'`:
+
+1. [GET /members/](#GET-/members)
+2. [GET /members/:address](#PUT-/members/:address)
+
+The following endpoints are maintained for backwards compatibility:
+
+### GET /members
+
+The `address` parameter identifies the user running this process, and the `alias` representing a more friendly name version of this. The default value of the latter is null, and is optionally set.
+
+```json
+[
+  {
+    "address": "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
+    "alias": "ALICE"
+  }
+]
+```
+
+### PUT /members/:address
+
+The `address` parameter identifies the user running this process, and the `alias` representing a more friendly name version of this. The default value of the latter is null, and is optionally set.
+
+```json
+{
+"address": "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
+"alias": "ALICE_UPDATED"
+}
+```
