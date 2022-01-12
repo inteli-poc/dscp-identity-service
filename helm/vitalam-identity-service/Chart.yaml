@@ -8,7 +8,6 @@ maintainers:
   - name: digicatapult
     email: opensource@digicatapult.org.uk
     url: www.digicatapult.org.uk
-
 dependencies:
   - name: postgresql
     version: '^10.12.2'
