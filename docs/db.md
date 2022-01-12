@@ -1,7 +1,5 @@
 # Database usage
 
-`vitalam-identity-service` is backed by a PostgreSQL database and is the canonical record of the readings recorded in a `VITALam` instance.
-
 ## Database migrations
 
 Database migrations are handled using [`knex.js`](https://knexjs.org/) and can be migrated manually using the following commands:
