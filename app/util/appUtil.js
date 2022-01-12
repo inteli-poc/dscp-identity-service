@@ -1,16 +1,6 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api')
-const jwksRsa = require('jwks-rsa')
-const jwt = require('jsonwebtoken')
 
-const {
-  API_HOST,
-  API_PORT,
-  METADATA_KEY_LENGTH,
-  METADATA_VALUE_LITERAL_LENGTH,
-  AUTH_AUDIENCE,
-  AUTH_JWKS_URI,
-  AUTH_ISSUER,
-} = require('../env')
+const { API_HOST, API_PORT, METADATA_KEY_LENGTH, METADATA_VALUE_LITERAL_LENGTH } = require('../env')
 const logger = require('../logger')
 const { getMemberAliasesDb } = require('../db')
 
@@ -102,52 +92,8 @@ const utf8ToUint8Array = (str, len) => {
   return arr
 }
 
-const client = jwksRsa({
-  cache: true,
-  rateLimit: true,
-  jwksRequestsPerMinute: 5,
-  jwksUri: AUTH_JWKS_URI,
-})
-
-async function getKey(header, cb) {
-  client.getSigningKey(header.kid, (err, key) => {
-    if (err) {
-      logger.warn(`An error occurred getting jwks key ${err}`)
-      cb(err, null)
-    } else if (key) {
-      const signingKey = key.publicKey || key.rsaPublicKey
-      cb(null, signingKey)
-    }
-  })
-}
-
-const verifyJwks = async (authHeader) => {
-  const authToken = authHeader ? authHeader.replace('Bearer ', '') : ''
-
-  const verifyOptions = {
-    audience: AUTH_AUDIENCE,
-    issuer: [AUTH_ISSUER],
-    algorithms: ['RS256'],
-    header: authToken,
-  }
-
-  return new Promise((resolve, reject) => {
-    jwt.verify(authToken, getKey, verifyOptions, (err, decoded) => {
-      if (err) {
-        resolve(false)
-      } else if (decoded) {
-        resolve(true)
-      } else {
-        logger.warn(`Error verifying jwks`)
-        reject({ message: 'An error occurred during jwks verification' })
-      }
-    })
-  })
-}
-
 module.exports = {
   getMembers,
   membershipReducer,
   utf8ToUint8Array,
-  verifyJwks,
 }

@@ -11,7 +11,7 @@ const { PORT, API_VERSION, API_MAJOR_VERSION } = require('./env')
 const logger = require('./logger')
 const v1ApiDoc = require('./api-v1/api-doc')
 const v1ApiService = require('./api-v1/services/apiService')
-const { verifyJwks } = require('./util/appUtil')
+const { verifyJwks } = require('./util/authUtil')
 
 async function createHttpServer() {
   const app = express()
