@@ -16,7 +16,7 @@ services:
       - 9933:9933
     restart: on-failure
   postgres-data:
-    image: postgis/postgis:9.6-2.5-alpine
+    image: postgres:14.1-alpine
     ports:
       - 5432:5432
     volumes:
