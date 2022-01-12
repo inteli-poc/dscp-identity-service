@@ -1,5 +1,14 @@
+postgresql:
+  enabled: true
+  postgresqlDatabase: vitalam
+  postgresqlUsername: postgres
+  postgresqlPassword: postgres
+replicaCount: 1
 config:
   port: 80
+  logLevel: info
+  dbName: vitalam
+  dbPort: 5432
 image:
   repository: ghcr.io/digicatapult/vitalam-identity-service
   pullPolicy: IfNotPresent

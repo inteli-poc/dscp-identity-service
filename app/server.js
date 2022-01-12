@@ -6,10 +6,12 @@ const swaggerUi = require('swagger-ui-express')
 const path = require('path')
 const bodyParser = require('body-parser')
 const compression = require('compression')
+
 const { PORT, API_VERSION, API_MAJOR_VERSION } = require('./env')
 const logger = require('./logger')
 const v1ApiDoc = require('./api-v1/api-doc')
 const v1ApiService = require('./api-v1/services/apiService')
+const { verifyJwks } = require('./util/appUtil')
 
 async function createHttpServer() {
   const app = express()
@@ -19,20 +21,24 @@ async function createHttpServer() {
   app.use(compression())
   app.use(bodyParser.json())
 
-  app.use((req, res, next) => {
-    if (req.path !== '/health') requestLogger(req, res)
-    next()
-  })
-
   app.get('/health', async (req, res) => {
     res.status(200).send({ version: API_VERSION, status: 'ok' })
     return
   })
 
+  app.use((req, res, next) => {
+    if (req.path !== '/health') requestLogger(req, res)
+    next()
+  })
+
   initialize({
     app,
     apiDoc: v1ApiDoc,
-    securityHandlers: {},
+    securityHandlers: {
+      bearerAuth: (req) => {
+        return verifyJwks(req.headers['authorization'])
+      },
+    },
     dependencies: {
       apiService: v1ApiService,
     },
@@ -44,7 +50,7 @@ async function createHttpServer() {
       urls: [
         {
           url: `http://localhost:${PORT}/${API_MAJOR_VERSION}/api-docs`,
-          name: 'ApiService',
+          name: 'IdentityService',
         },
       ],
     },
