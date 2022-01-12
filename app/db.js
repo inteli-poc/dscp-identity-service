@@ -20,8 +20,12 @@ async function getMemberAliasesDb(members) {
   return client('members AS m').select(['m.address', 'm.alias']).whereIn('address', members).orderBy('alias')
 }
 
-async function getMembersByAliasDb({ address, alias }) {
-  return client('members AS m').select(['m.address', 'm.alias']).where({ alias }).orWhere({ address })
+async function getMembersByAddressDb({ address }) {
+  return client('members AS m').select(['m.address']).where({ address })
+}
+
+async function getMembersByAliasDb({ alias }) {
+  return client('members AS m').select(['m.address', 'm.alias']).where({ alias })
 }
 
 async function createMemberAliasDb({ address, alias }) {
@@ -35,6 +39,7 @@ async function updateMemberAliasDb({ address, alias }) {
 module.exports = {
   client,
   getMemberAliasesDb,
+  getMembersByAddressDb,
   getMembersByAliasDb,
   createMemberAliasDb,
   updateMemberAliasDb,
