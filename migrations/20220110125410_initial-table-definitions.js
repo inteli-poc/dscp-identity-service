@@ -11,13 +11,12 @@ exports.up = async (knex) => {
 
   await knex.schema.createTable('members', (def) => {
     def.uuid('id').defaultTo(uuidGenerateV4())
-    def.string('address', 50).notNullable()
-    def.string('alias', 50).notNullable()
+    def.string('address', 50).unique().notNullable()
+    def.string('alias', 50).unique().notNullable()
     def.datetime('created_at').notNullable().default(now())
     def.datetime('updated_at').notNullable().default(now())
 
     def.primary(['id'])
-    def.unique(['address', 'alias'])
     def.index(['alias'])
   })
 }
