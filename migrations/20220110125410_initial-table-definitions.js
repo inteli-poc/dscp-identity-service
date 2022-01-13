@@ -17,7 +17,6 @@ exports.up = async (knex) => {
     def.datetime('updated_at').notNullable().default(now())
 
     def.primary(['id'])
-    def.index(['alias'])
   })
 }
 

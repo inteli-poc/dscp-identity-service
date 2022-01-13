@@ -20,18 +20,18 @@ The following tables exist in the `vitalam` database.
 
 #### Columns
 
-| column          | PostgreSQL type           | nullable |       default        | description                         |
-|:----------------| :------------------------ | :------- | :------------------: |:------------------------------------|
-| `id`            | `UUID`                    | FALSE    | `uuid_generate_v4()` | Unique identifier for the `dataset` |
-| `address`       | `CHARACTER VARYING (50)`  | FALSE    |          -           | The address of the member           |
-| `alias`         | `CHARACTER VARYING (50)`  | FALSE    |          -           | A friendly name for the member      |
-| `created_at`    | `Timestamp with timezone` | FALSE    |       `now()`        | When the row was first created      |
-| `updated_at`    | `Timestamp with timezone` | FALSE    |       `now()`        | When the row was last updated       |
+| column          | PostgreSQL type           | nullable |       default        | description                        |
+|:----------------| :------------------------ | :------- | :------------------: |:-----------------------------------|
+| `id`            | `UUID`                    | FALSE    | `uuid_generate_v4()` | Unique identifier for the `member` |
+| `address`       | `CHARACTER VARYING (50)`  | FALSE    |          -           | The address of the member          |
+| `alias`         | `CHARACTER VARYING (50)`  | FALSE    |          -           | A friendly name for the member     |
+| `created_at`    | `Timestamp with timezone` | FALSE    |       `now()`        | When the row was first created     |
+| `updated_at`    | `Timestamp with timezone` | FALSE    |       `now()`        | When the row was last updated      |
 
 #### Indexes
 
-| columns            | Index Type | description                                                                         |
-|:-------------------|:-----------|:------------------------------------------------------------------------------------|
-| `id`               | PRIMARY    | Primary key                                                                         |
-| `alias`            | Index      | Allows quick filtering of `members` by `alias` name                                 |
-| `address`, `alias` | Unique     | Prevents more than one `member` from being created with identical characterisations |
+| columns     | Index Type | description                                                                         |
+|:------------|:-----------|:------------------------------------------------------------------------------------|
+| `id`        | PRIMARY    | Primary key                                                                         |
+| `address`   | Unique     | Prevents more than one `member` from being created with identical characterisations |
+| `alias`     | Unique     | Prevents more than one `member` from being created with identical characterisations |
