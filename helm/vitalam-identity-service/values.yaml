@@ -9,6 +9,10 @@ config:
   dbName: vitalam
   dbPort: 5432
   externalPostgresql: null
+  authJwksUri: https://vitalam.eu.auth0.com/.well-known/jwks.json
+  authAudience: vitalam-test
+  authIssuer: https://vitalam.eu.auth0.com/
+  authTokenUrl: https://vitalam.eu.auth0.com/oauth/token
 image:
   repository: ghcr.io/digicatapult/vitalam-identity-service
   pullPolicy: IfNotPresent

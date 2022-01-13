@@ -7,6 +7,10 @@ metadata:
 data:
   port: {{ .Values.config.port | quote }}
   logLevel: {{ .Values.config.logLevel }}
-  dbHost: {{ include "vitalam-identity-service.fullname" . }}
+  dbHost: {{ include "vitalam-identity-service.postgresql.fullname" . }}
   dbPort: {{ .Values.config.dbPort | quote }}
   dbName: {{ .Values.config.dbName }}
+  authJwksUri: {{ .Values.config.authJwksUri | b64enc | quote }}
+  authAudience: {{ .Values.config.authAudience | b64enc | quote }}
+  authIssuer: {{ .Values.config.authIssuer | b64enc | quote }}
+  authTokenUrl: {{ .Values.config.authTokenUrl | b64enc | quote }}
