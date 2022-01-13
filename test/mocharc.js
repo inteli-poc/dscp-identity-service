@@ -1,7 +1,7 @@
 module.exports = {
   recursive: true,
-  slow: 2000,
-  timeout: 10000,
+  slow: 500,
+  timeout: 1000,
   extension: ['.test.js'],
   exit: true,
 }
