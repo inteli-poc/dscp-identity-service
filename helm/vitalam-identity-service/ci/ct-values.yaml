@@ -1,0 +1,4 @@
+image:
+  repository: 'vitalam-identity-service'
+  tag: 'latest'
+  PullPolicy: Never

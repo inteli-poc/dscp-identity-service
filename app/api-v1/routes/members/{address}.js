@@ -1,0 +1,56 @@
+const {
+  memberAliasesResponses,
+  validateMemberAliasesResponse,
+} = require('../../validators/memberAliasesResponseValidator')
+
+module.exports = function (apiService) {
+  const doc = {
+    PUT: async function (req, res) {
+      const { address } = req.params
+      const { statusCode, result } = await apiService.putMemberAlias(address, req.body)
+
+      const validationErrors = validateMemberAliasesResponse(statusCode, result)
+
+      if (validationErrors) {
+        res.status(statusCode).json(validationErrors)
+        return
+      } else {
+        res.status(statusCode).json(result)
+        return
+      }
+    },
+  }
+
+  doc.PUT.apiDoc = {
+    summary: 'Update member alias',
+    parameters: [
+      {
+        description: 'Address of the member',
+        in: 'path',
+        required: true,
+        name: 'address',
+        allowEmptyValue: true,
+      },
+    ],
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              alias: {
+                type: 'string',
+              },
+            },
+            required: ['alias'],
+          },
+        },
+      },
+    },
+    responses: memberAliasesResponses,
+    security: [{ bearerAuth: [] }],
+    tags: ['members'],
+  }
+
+  return doc
+}

@@ -1,0 +1,20 @@
+postgresql:
+  enabled: true
+  postgresqlDatabase: vitalam
+  postgresqlUsername: postgres
+  postgresqlPassword: postgres
+config:
+  port: 80
+  logLevel: info
+  dbName: vitalam
+  dbPort: 5432
+  externalPostgresql: null
+  authJwksUri: https://vitalam.eu.auth0.com/.well-known/jwks.json
+  authAudience: vitalam-test
+  authIssuer: https://vitalam.eu.auth0.com/
+  authTokenUrl: https://vitalam.eu.auth0.com/oauth/token
+image:
+  repository: ghcr.io/digicatapult/vitalam-identity-service
+  pullPolicy: IfNotPresent
+  tag: 'v0.0.1'
+  pullSecrets: ['ghcr-digicatapult']

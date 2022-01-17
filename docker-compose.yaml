@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  vitalam-node:
+    image: ghcr.io/digicatapult/vitalam-node:v2.5.0
+    command: /bin/sh -c "
+      ./vitalam-node
+      --base-path /data/
+      --dev
+      --unsafe-ws-external
+      --unsafe-rpc-external
+      --rpc-cors all"
+    ports:
+      - 30333:30333
+      - 9944:9944
+      - 9933:9933
+    restart: on-failure
+  postgres-data:
+    image: postgres:14.1-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - data-storage:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=vitalam
+volumes:
+  data-storage:
