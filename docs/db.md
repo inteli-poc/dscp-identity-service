@@ -30,8 +30,8 @@ The following tables exist in the `vitalam` database.
 
 #### Indexes
 
-| columns     | Index Type | description                                                                         |
-|:------------|:-----------|:------------------------------------------------------------------------------------|
-| `id`        | PRIMARY    | Primary key                                                                         |
-| `address`   | Unique     | Prevents more than one `member` from being created with identical characterisations |
-| `alias`     | Unique     | Prevents more than one `member` from being created with identical characterisations |
+| columns     | Index Type | description                                                                    |
+|:------------|:-----------|:-------------------------------------------------------------------------------|
+| `id`        | PRIMARY    | Primary key                                                                    |
+| `address`   | Unique     | Prevents more than one `member` from being created with an identical `address` |
+| `alias`     | Unique     | Prevents more than one `member` from being created with an identical `alias`   |
