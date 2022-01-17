@@ -7,6 +7,9 @@ FROM node:14.17.0-alpine
 # shadows the argument.
 ARG LOGLEVEL
 ENV NPM_CONFIG_LOGLEVEL ${LOGLEVEL}
+RUN apk update && \
+  apk add python make build-base && \
+  rm -rf /var/cache/apk/* \
 
 # Install base dependencies
 RUN npm -g install npm@latest
