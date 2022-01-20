@@ -11,4 +11,4 @@ spec:
   ports:
     - protocol: 'TCP'
       port: 80
-      targetPort: {{ .Values.config.port }}
+      targetPort: {{ .Values.config.apiPort }}
