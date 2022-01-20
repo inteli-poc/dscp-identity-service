@@ -8,7 +8,7 @@ FROM node:14.17.0-alpine AS build
 ARG LOGLEVEL
 ENV NPM_CONFIG_LOGLEVEL ${LOGLEVEL}
 RUN apk update && \
-  apk add python make build-base && \
+  apk add python3 make build-base && \
   rm -rf /var/cache/apk/*
 
 WORKDIR /vitalam-identity-service
