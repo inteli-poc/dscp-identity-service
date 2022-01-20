@@ -17,7 +17,7 @@ WORKDIR /vitalam-identity-service
 RUN npm -g install npm@latest
 
 COPY . .
-RUN npm ci install --prod
+RUN npm ci install --production
 
 ##################################################################################################
 
