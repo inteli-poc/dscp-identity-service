@@ -14,19 +14,18 @@ RUN apk update && \
 WORKDIR /vitalam-identity-service
 
 # Install base dependencies
+RUN npm -g install npm@latest
+
 COPY . .
-RUN npm install
+RUN npm ci install
 
 ##################################################################################################
 
 FROM node:14.17.0-alpine AS runtime
 
-# Install base dependencies
-RUN npm -g install npm@latest
+WORKDIR /vitalam-identity-service
 
 COPY --from=build /vitalam-identity-service .
-
-RUN npm install
 
 EXPOSE 80
 CMD ["node", "./app/index.js"]
