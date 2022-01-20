@@ -66,9 +66,9 @@ async function membershipReducer(members) {
   const memberAliases = await getMemberAliasesDb(members)
 
   return members.reduce((acc, item) => {
-    const alias = memberAliases.find(({ address }) => address === item) || null
+    const memberAlias = memberAliases.find(({ address }) => address === item) || null
 
-    acc.push({ address: item, alias })
+    acc.push({ address: item, alias: memberAlias ? memberAlias[0].alias : memberAlias })
 
     return acc
   }, [])
