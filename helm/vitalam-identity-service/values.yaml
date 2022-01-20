@@ -4,7 +4,8 @@ postgresql:
   postgresqlUsername: postgres
   postgresqlPassword: postgres
 config:
-  port: 80
+  apiHost: localhost
+  apiPort: 80
   logLevel: info
   dbName: vitalam
   dbPort: 5432

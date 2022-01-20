@@ -5,7 +5,8 @@ metadata:
   labels:
     {{- include "vitalam-identity-service.labels" . | nindent 4 }}
 data:
-  port: {{ .Values.config.port | quote }}
+  apiHost: {{ .Values.config.apiHost }}
+  apiPort: {{ .Values.config.dbPort | quote }}
   logLevel: {{ .Values.config.logLevel }}
   dbHost: {{ include "vitalam-identity-service.postgresql.fullname" . }}
   dbPort: {{ .Values.config.dbPort | quote }}
