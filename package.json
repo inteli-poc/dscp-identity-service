@@ -1,6 +1,6 @@
 {
   "name": "@digicatapult/vitalam-identity-service",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Identity Service for VITALam",
   "main": "app/index.js",
   "scripts": {

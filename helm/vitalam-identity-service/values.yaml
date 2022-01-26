@@ -17,5 +17,5 @@ config:
 image:
   repository: ghcr.io/digicatapult/vitalam-identity-service
   pullPolicy: IfNotPresent
-  tag: 'v0.0.2'
+  tag: 'v0.0.3'
   pullSecrets: ['ghcr-digicatapult']
