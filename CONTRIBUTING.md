@@ -1,4 +1,4 @@
-# Contributing to vitalam-identity-service
+# Contributing to vitalam-service-template
 
 Firstly, we would like to thank you for taking the time to contribute!
 

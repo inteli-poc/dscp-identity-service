@@ -1,6 +1,5 @@
 const envalid = require('envalid')
 const dotenv = require('dotenv')
-
 const { version } = require('../package.json')
 
 if (process.env.NODE_ENV === 'test') {
