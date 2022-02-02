@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.0.0-experimental
 
-FROM node:14.17.0-alpine AS build
+FROM node:16-alpine AS build
 
 # Allow log level to be controlled. Uses an argument name that is different
 # from the existing environment variable, otherwise the environment variable
@@ -14,14 +14,14 @@ RUN apk update && \
 WORKDIR /vitalam-identity-service
 
 # Install base dependencies
-RUN npm -g install npm@latest
+RUN npm -g install npm@8.x.x
 
 COPY . .
 RUN npm ci --production
 
 ##################################################################################################
 
-FROM node:14.17.0-alpine AS runtime
+FROM node:16-alpine AS runtime
 
 WORKDIR /vitalam-identity-service
 

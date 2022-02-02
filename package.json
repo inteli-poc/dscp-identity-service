@@ -1,6 +1,6 @@
 {
   "name": "@digicatapult/vitalam-identity-service",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Identity Service for VITALam",
   "main": "app/index.js",
   "scripts": {
@@ -16,7 +16,8 @@
     "url": "git+https://github.com/digicatapult/vitalam-identity-service.git"
   },
   "engines": {
-    "node": ">=14.17.0"
+    "node": "16.x.x",
+    "npm": "8.x.x"
   },
   "keywords": [
     "VITALam"
