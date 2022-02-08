@@ -8,6 +8,7 @@ spec:
   selector:
     matchLabels:
       name: {{ include "vitalam-identity-service.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       annotations:
@@ -52,14 +53,12 @@ spec:
         - name: {{ include "vitalam-identity-service.fullname" . }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: {{ .Values.config.apiPort }}
-            initialDelaySeconds: 15
-            timeoutSeconds: 3
-            periodSeconds: 5
           env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  key: port
             - name: LOG_LEVEL
               valueFrom:
                 configMapKeyRef:
@@ -69,12 +68,9 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: {{ include "vitalam-identity-service.fullname" . }}-config
-                  key: apiHost
+                  key: nodeHost
             - name: API_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
-                  key: apiPort
+              value: "9944"
             - name: AUTH_JWKS_URI
               valueFrom:
                 configMapKeyRef:
@@ -120,3 +116,17 @@ spec:
                 secretKeyRef:
                   name: {{ include "vitalam-identity-service.fullname" . }}-secret
                   key: dbPassword
+          ports:
+            - containerPort: {{ .Values.config.port }}
+              name: http
+              protocol: TCP
+          {{- if .Values.config.enableLivenessProbe }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            failureThreshold: 5
+            timeoutSeconds: 3
+            periodSeconds: 10
+          {{- end }}

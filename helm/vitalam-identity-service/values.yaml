@@ -1,21 +1,33 @@
+config:
+  # externalNodeHost: "" # This overrides vitalamNode.enabled when setting the API_HOST envar
+  port: 80
+  logLevel: info
+  dbName: vitalam
+  dbPort: 5432
+  enableLivenessProbe: true
+  auth:
+    jwksUri: https://vitalam.eu.auth0.com/.well-known/jwks.json
+    audience: vitalam-test
+    issuer: https://vitalam.eu.auth0.com/
+    tokenUrl: https://vitalam.eu.auth0.com/oauth/token
+
+ingress:
+  # annotations: {}
+  paths:
+    - /v1
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/digicatapult/vitalam-identity-service
+  pullPolicy: IfNotPresent
+  tag: 'v0.0.5'
+  pullSecrets: ['ghcr-digicatapult']
+
 postgresql:
   enabled: true
   postgresqlDatabase: vitalam
   postgresqlUsername: postgres
   postgresqlPassword: postgres
-config:
-  apiHost: localhost
-  apiPort: 80
-  logLevel: info
-  dbName: vitalam
-  dbPort: 5432
-  externalPostgresql: null
-  authJwksUri: https://vitalam.eu.auth0.com/.well-known/jwks.json
-  authAudience: vitalam-test
-  authIssuer: https://vitalam.eu.auth0.com/
-  authTokenUrl: https://vitalam.eu.auth0.com/oauth/token
-image:
-  repository: ghcr.io/digicatapult/vitalam-identity-service
-  pullPolicy: IfNotPresent
-  tag: 'v0.0.4'
-  pullSecrets: ['ghcr-digicatapult']
+vitalamNode:
+  enabled: true

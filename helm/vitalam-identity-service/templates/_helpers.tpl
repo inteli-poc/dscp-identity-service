@@ -69,6 +69,19 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 {{- end -}}
 
+{{/*
+Template to define the vitalam-node hostname.
+*/}}
+{{- define "vitalam-identity-service.node-host" -}}
+  {{- if .Values.config.externalNodeHost -}}
+    {{- .Values.config.externalNodeHost -}}
+  {{- else if .Values.vitalamNode.enabled -}}
+    {{- template "vitalam-node.fullname" .Subcharts.vitalamNode -}}
+  {{- else }}
+    {{- fail "Must supply either externalNodeHost or enable vitalamNode" -}}
+  {{- end -}}
+{{- end -}}
+
 {{- define "vitalam-identity-service.initDb.name" -}}
 {{- if .Values.fullnameOverride -}}
 {{- printf "%s-db" .Values.fullnameOverride | lower | trunc 63 | trimSuffix "-" -}}

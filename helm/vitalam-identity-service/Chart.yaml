@@ -1,8 +1,8 @@
 apiVersion: v2
 name: vitalam-identity-service
-appVersion: '0.0.4'
+appVersion: '0.0.5'
 description: A Helm chart for vitalam-identity-service
-version: '0.0.4'
+version: '0.0.5'
 type: application
 maintainers:
   - name: digicatapult
@@ -13,3 +13,8 @@ dependencies:
     version: '^10.12.2'
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
+  - name: vitalam-node
+    version: '0.23.6'
+    repository: https://digicatapult.github.io/vitalam-node/
+    condition: vitalamNode.enabled
+    alias: vitalamNode

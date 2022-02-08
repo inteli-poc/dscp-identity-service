@@ -5,13 +5,13 @@ metadata:
   labels:
     {{- include "vitalam-identity-service.labels" . | nindent 4 }}
 data:
-  apiHost: {{ .Values.config.apiHost }}
-  apiPort: {{ .Values.config.dbPort | quote }}
+  nodeHost: {{ include "vitalam-identity-service.node-host" . }}
+  port: {{ .Values.config.port | quote }}
   logLevel: {{ .Values.config.logLevel }}
   dbHost: {{ include "vitalam-identity-service.postgresql.fullname" . }}
   dbPort: {{ .Values.config.dbPort | quote }}
   dbName: {{ .Values.config.dbName }}
-  authJwksUri: {{ .Values.config.authJwksUri | quote }}
-  authAudience: {{ .Values.config.authAudience | quote }}
-  authIssuer: {{ .Values.config.authIssuer | quote }}
-  authTokenUrl: {{ .Values.config.authTokenUrl | quote }}
+  authJwksUri: {{ .Values.config.auth.jwksUri | quote }}
+  authAudience: {{ .Values.config.auth.audience | quote }}
+  authIssuer: {{ .Values.config.auth.issuer | quote }}
+  authTokenUrl: {{ .Values.config.auth.tokenUrl | quote }}
