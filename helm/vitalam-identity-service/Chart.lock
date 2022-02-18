@@ -4,6 +4,6 @@ dependencies:
   version: 10.16.2
 - name: vitalam-node
   repository: https://digicatapult.github.io/vitalam-node/
-  version: 0.23.6
-digest: sha256:4b0c59dc4056ea00733602b31e0e65dfd9ac415c7db7d9cb4d4dde8a6bf2cf05
-generated: "2022-02-08T11:11:56.4936Z"
+  version: 0.24.1
+digest: sha256:15e2e81d34397a15ae7a3833db7572b70bf1dd77b28c2beb24c2012bcbd07b83
+generated: "2022-02-18T16:20:06.069387Z"
