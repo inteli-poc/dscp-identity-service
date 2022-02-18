@@ -12,7 +12,7 @@ First, ensure you're running the correct [version](.node-version) of `npm`, then
 npm install
 ```
 
-The API requires instances of [`vitalam-node`](https://github.com/digicatapult/vitalam-node).
+The API requires instances of Postgresql and [`vitalam-node`](https://github.com/digicatapult/vitalam-node).
 To bring this up locally:
 
 ### `vitalam-node`
@@ -21,6 +21,16 @@ Clone [vitalam-node](https://github.com/digicatapult/vitalam-node) and follow th
 
 ```
 ./target/release/vitalam-node --dev
+```
+
+Or run
+```
+docker-compose up -d
+```
+
+and run the DB migrations
+```
+npx knex migrate:latest --env test
 ```
 
 ## Environment Variables
