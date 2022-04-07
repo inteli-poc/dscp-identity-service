@@ -11,7 +11,7 @@ RUN apk update && \
   apk add python3 make build-base && \
   rm -rf /var/cache/apk/*
 
-WORKDIR /vitalam-identity-service
+WORKDIR /dscp-identity-service
 
 # Install base dependencies
 RUN npm -g install npm@8.x.x
@@ -23,9 +23,9 @@ RUN npm ci --production
 
 FROM node:16-alpine AS runtime
 
-WORKDIR /vitalam-identity-service
+WORKDIR /dscp-identity-service
 
-COPY --from=build /vitalam-identity-service .
+COPY --from=build /dscp-identity-service .
 
 EXPOSE 80
 CMD ["node", "./app/index.js"]

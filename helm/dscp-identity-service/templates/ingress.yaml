@@ -1,11 +1,11 @@
-{{- $fullName := include "vitalam-identity-service.fullname" . -}}
+{{- $fullName := include "dscp-identity-service.fullname" . -}}
   {{- $ingressPaths := .Values.ingress.paths -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-  {{- include "vitalam-identity-service.labels" . | nindent 4 }}
+  {{- include "dscp-identity-service.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
   {{- toYaml . | nindent 4 }}

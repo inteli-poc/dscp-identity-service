@@ -1,7 +1,7 @@
 {
-  "name": "@digicatapult/vitalam-identity-service",
-  "version": "0.0.6",
-  "description": "Identity Service for VITALam",
+  "name": "@digicatapult/dscp-identity-service",
+  "version": "1.0.0",
+  "description": "Identity Service for DSCP",
   "main": "app/index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha --config ./test/mocharc.js ./test",
@@ -13,21 +13,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/digicatapult/vitalam-identity-service.git"
+    "url": "git+https://github.com/digicatapult/dscp-identity-service.git"
   },
   "engines": {
     "node": "16.x.x",
     "npm": "8.x.x"
   },
   "keywords": [
-    "VITALam"
+    "DSCP"
   ],
   "author": "Digital Catapult",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/digicatapult/vitalam-identity-service/issues"
+    "url": "https://github.com/digicatapult/dscp-identity-service/issues"
   },
-  "homepage": "https://github.com/digicatapult/vitalam-identity-service#readme",
+  "homepage": "https://github.com/digicatapult/dscp-identity-service#readme",
   "dependencies": {
     "@polkadot/api": "^5.9.1",
     "body-parser": "^1.19.0",

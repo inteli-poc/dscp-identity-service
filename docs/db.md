@@ -12,7 +12,7 @@ npx knex migrate:down # used to migrate to the previous database version
 
 ## Table structure
 
-The following tables exist in the `vitalam` database.
+The following tables exist in the `dscp` database.
 
 ### `members`
 
@@ -20,18 +20,18 @@ The following tables exist in the `vitalam` database.
 
 #### Columns
 
-| column          | PostgreSQL type           | nullable |       default        | description                        |
-|:----------------| :------------------------ | :------- | :------------------: |:-----------------------------------|
-| `id`            | `UUID`                    | FALSE    | `uuid_generate_v4()` | Unique identifier for the `member` |
-| `address`       | `CHARACTER VARYING (50)`  | FALSE    |          -           | The address of the member          |
-| `alias`         | `CHARACTER VARYING (50)`  | FALSE    |          -           | A friendly name for the member     |
-| `created_at`    | `Timestamp with timezone` | FALSE    |       `now()`        | When the row was first created     |
-| `updated_at`    | `Timestamp with timezone` | FALSE    |       `now()`        | When the row was last updated      |
+| column       | PostgreSQL type           | nullable |       default        | description                        |
+| :----------- | :------------------------ | :------- | :------------------: | :--------------------------------- |
+| `id`         | `UUID`                    | FALSE    | `uuid_generate_v4()` | Unique identifier for the `member` |
+| `address`    | `CHARACTER VARYING (50)`  | FALSE    |          -           | The address of the member          |
+| `alias`      | `CHARACTER VARYING (50)`  | FALSE    |          -           | A friendly name for the member     |
+| `created_at` | `Timestamp with timezone` | FALSE    |       `now()`        | When the row was first created     |
+| `updated_at` | `Timestamp with timezone` | FALSE    |       `now()`        | When the row was last updated      |
 
 #### Indexes
 
-| columns     | Index Type | description                                                                    |
-|:------------|:-----------|:-------------------------------------------------------------------------------|
-| `id`        | PRIMARY    | Primary key                                                                    |
-| `address`   | Unique     | Prevents more than one `member` from being created with an identical `address` |
-| `alias`     | Unique     | Prevents more than one `member` from being created with an identical `alias`   |
+| columns   | Index Type | description                                                                    |
+| :-------- | :--------- | :----------------------------------------------------------------------------- |
+| `id`      | PRIMARY    | Primary key                                                                    |
+| `address` | Unique     | Prevents more than one `member` from being created with an identical `address` |
+| `alias`   | Unique     | Prevents more than one `member` from being created with an identical `alias`   |

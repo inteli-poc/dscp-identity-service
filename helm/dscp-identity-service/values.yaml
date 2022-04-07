@@ -1,0 +1,33 @@
+config:
+  # externalNodeHost: "" # This overrides dscpNode.enabled when setting the API_HOST envar
+  port: 80
+  logLevel: info
+  dbName: dscp
+  dbPort: 5432
+  enableLivenessProbe: true
+  auth:
+    jwksUri: https://dscp.eu.auth0.com/.well-known/jwks.json
+    audience: dscp-test
+    issuer: https://dscp.eu.auth0.com/
+    tokenUrl: https://dscp.eu.auth0.com/oauth/token
+
+ingress:
+  # annotations: {}
+  paths:
+    - /v1
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/digicatapult/dscp-identity-service
+  pullPolicy: IfNotPresent
+  tag: 'v1.0.0'
+  pullSecrets: ['ghcr-digicatapult']
+
+postgresql:
+  enabled: true
+  postgresqlDatabase: dscp
+  postgresqlUsername: postgres
+  postgresqlPassword: postgres
+dscpNode:
+  enabled: true

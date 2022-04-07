@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "vitalam-identity-service.fullname" . }}
+  name: {{ include "dscp-identity-service.fullname" . }}
   labels:
-    {{- include "vitalam-identity-service.labels" . | nindent 4 }}
+    {{- include "dscp-identity-service.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      name: {{ include "vitalam-identity-service.fullname" . }}
+      name: {{ include "dscp-identity-service.fullname" . }}
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
@@ -15,11 +15,11 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        name: {{ include "vitalam-identity-service.fullname" . }}
+        name: {{ include "dscp-identity-service.fullname" . }}
     spec:
-      {{- include "vitalam-identity-service.imagePullSecrets" . | indent 6 }}
+      {{- include "dscp-identity-service.imagePullSecrets" . | indent 6 }}
       initContainers:
-        - name: {{ include "vitalam-identity-service.initDb.name" . }}
+        - name: {{ include "dscp-identity-service.initDb.name" . }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           command: [ 'npx', 'knex', "migrate:latest", "--env", "production" ]
@@ -27,94 +27,94 @@ spec:
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: dbHost
             - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: dbPort
             - name: DB_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: dbName
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-secret
+                  name: {{ include "dscp-identity-service.fullname" . }}-secret
                   key: dbUsername
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-secret
+                  name: {{ include "dscp-identity-service.fullname" . }}-secret
                   key: dbPassword
       containers:
-        - name: {{ include "vitalam-identity-service.fullname" . }}
+        - name: {{ include "dscp-identity-service.fullname" . }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           env:
             - name: PORT
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: port
             - name: LOG_LEVEL
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: logLevel
             - name: API_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: nodeHost
             - name: API_PORT
               value: "9944"
             - name: AUTH_JWKS_URI
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: authJwksUri
             - name: AUTH_AUDIENCE
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: authAudience
             - name: AUTH_ISSUER
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: authIssuer
             - name: AUTH_TOKEN_URL
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: authTokenUrl
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: dbHost
             - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: dbPort
             - name: DB_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-config
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: dbName
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-secret
+                  name: {{ include "dscp-identity-service.fullname" . }}-secret
                   key: dbUsername
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "vitalam-identity-service.fullname" . }}-secret
+                  name: {{ include "dscp-identity-service.fullname" . }}-secret
                   key: dbPassword
           ports:
             - containerPort: {{ .Values.config.port }}

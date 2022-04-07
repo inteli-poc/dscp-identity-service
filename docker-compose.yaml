@@ -1,15 +1,14 @@
 version: '3'
 
 services:
-  vitalam-node:
-    image: ghcr.io/digicatapult/vitalam-node:v2.5.0
-    command: /bin/sh -c "
-      ./vitalam-node
+  dscp-node:
+    image: ghcr.io/digicatapult/dscp-node:v3.0.0
+    command:
       --base-path /data/
       --dev
       --unsafe-ws-external
       --unsafe-rpc-external
-      --rpc-cors all"
+      --rpc-cors all
     ports:
       - 30333:30333
       - 9944:9944
@@ -24,6 +23,6 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=vitalam
+      - POSTGRES_DB=dscp
 volumes:
   data-storage:

@@ -1,6 +1,12 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api')
 
-const { API_HOST, API_PORT, METADATA_KEY_LENGTH, METADATA_VALUE_LITERAL_LENGTH } = require('../env')
+const {
+  API_HOST,
+  API_PORT,
+  METADATA_KEY_LENGTH,
+  METADATA_VALUE_LITERAL_LENGTH,
+  PROCESS_IDENTIFIER_LENGTH,
+} = require('../env')
 const logger = require('../logger')
 const { getMemberAliasesDb } = require('../db')
 
@@ -27,7 +33,7 @@ const apiOptions = {
       parents: 'Vec<TokenId>',
       children: 'Option<Vec<TokenId>>',
     },
-    Output: {
+    ProcessIO: {
       roles: 'BTreeMap<RoleKey, AccountId>',
       metadata: 'BTreeMap<TokenMetadataKey, TokenMetadataValue>',
       parent_index: 'Option<u32>',
@@ -36,13 +42,42 @@ const apiOptions = {
       _enum: {
         File: 'Hash',
         Literal: `[u8; ${METADATA_VALUE_LITERAL_LENGTH}]`,
+        TokenId: 'TokenId',
         None: null,
       },
     },
     Role: {
-      // order must match node as values are referenced by index. First entry is default.
-      _enum: ['Admin', 'ManufacturingEngineer', 'ProcurementBuyer', 'ProcurementPlanner', 'Supplier'],
+      _enum: ['Owner', 'Customer', 'AdditiveManufacturer', 'Laboratory', 'Buyer', 'Supplier', 'Reviewer'],
     },
+    ProcessIdentifier: `[u8; ${PROCESS_IDENTIFIER_LENGTH}]`,
+    ProcessVersion: 'u32',
+    ProcessId: {
+      id: 'ProcessIdentifier',
+      version: 'ProcessVersion',
+    },
+    Process: {
+      status: 'ProcessStatus',
+      restrictions: 'Vec<Restriction>',
+    },
+    ProcessStatus: {
+      _enum: ['Disabled', 'Enabled'],
+    },
+    Restriction: {
+      _enum: {
+        None: '()',
+        SenderOwnsAllInputs: '()',
+        FixedNumberOfInputs: 'FixedNumberOfInputsRestriction',
+        FixedNumberOfOutputs: 'FixedNumberOfOutputsRestriction',
+      },
+    },
+    FixedNumberOfInputsRestriction: {
+      num_inputs: 'u32',
+    },
+    FixedNumberOfOutputsRestriction: {
+      num_outputs: 'u32',
+    },
+    IsNew: 'bool',
+    Restrictions: 'Vec<Restriction>',
   },
 }
 

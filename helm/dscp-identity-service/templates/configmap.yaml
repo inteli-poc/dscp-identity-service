@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "vitalam-identity-service.fullname" . }}-config
+  name: {{ include "dscp-identity-service.fullname" . }}-config
   labels:
-    {{- include "vitalam-identity-service.labels" . | nindent 4 }}
+    {{- include "dscp-identity-service.labels" . | nindent 4 }}
 data:
-  nodeHost: {{ include "vitalam-identity-service.node-host" . }}
+  nodeHost: {{ include "dscp-identity-service.node-host" . }}
   port: {{ .Values.config.port | quote }}
   logLevel: {{ .Values.config.logLevel }}
-  dbHost: {{ include "vitalam-identity-service.postgresql.fullname" . }}
+  dbHost: {{ include "dscp-identity-service.postgresql.fullname" . }}
   dbPort: {{ .Values.config.dbPort | quote }}
   dbName: {{ .Values.config.dbName }}
   authJwksUri: {{ .Values.config.auth.jwksUri | quote }}
