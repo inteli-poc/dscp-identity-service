@@ -89,6 +89,8 @@ jobs:
           context: .
           load: true
           file: ./Dockerfile
+          secrets: |
+            github=${{ secrets.GITHUB_TOKEN }}          
           tags: |
             ${{ needs.preconditions.outputs.repo_name }}:latest
           labels: |
