@@ -1,5 +1,5 @@
 const createJWKSMock = require('mock-jwks').default
-const { describe, test, before } = require('mocha')
+const { describe, test, before, afterEach } = require('mocha')
 const { expect } = require('chai')
 const nock = require('nock')
 
@@ -45,6 +45,10 @@ describe('routes', function () {
       await jwksMock.stop()
     })
 
+    afterEach(async function () {
+      await cleanup()
+    })
+
     test('return membership members', async function () {
       const expectedResult = [
         { address: USER_BOB_TOKEN, alias: null },
@@ -53,6 +57,21 @@ describe('routes', function () {
         { address: BOB_STASH, alias: null },
       ]
 
+      const res = await getMembersRoute(app, authToken)
+
+      expect(res.status).to.equal(200)
+      expect(res.body).deep.equal(expectedResult)
+    })
+
+    test('return membership members with aliases', async function () {
+      const expectedResult = [
+        { address: USER_BOB_TOKEN, alias: null },
+        { address: ALICE_STASH, alias: 'ALICE_STASH' },
+        { address: USER_ALICE_TOKEN, alias: null },
+        { address: BOB_STASH, alias: null },
+      ]
+
+      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
       const res = await getMembersRoute(app, authToken)
 
       expect(res.status).to.equal(200)
@@ -71,6 +90,7 @@ describe('routes', function () {
     test('update existing member alias', async function () {
       const expectedResult = { message: 'member alias already exists' }
 
+      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
       const res = await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
 
       expect(res.status).to.equal(409)
@@ -80,6 +100,7 @@ describe('routes', function () {
     test('update existing member alias', async function () {
       const expectedResult = { address: ALICE_STASH, alias: 'ALICE_STASH_UPDATE' }
 
+      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
       const res = await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH_UPDATE' })
 
       expect(res.status).to.equal(200)
@@ -89,7 +110,8 @@ describe('routes', function () {
     test('update alternative non-existing member with duplicate alias', async function () {
       const expectedResult = { message: 'member alias already exists' }
 
-      const res = await putMemberAliasRoute(app, authToken, BOB_STASH, { alias: 'ALICE_STASH_UPDATE' })
+      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
+      const res = await putMemberAliasRoute(app, authToken, BOB_STASH, { alias: 'ALICE_STASH' })
 
       expect(res.status).to.equal(409)
       expect(res.body).deep.equal(expectedResult)

@@ -40,7 +40,7 @@ async function membershipReducer(members) {
   return members.reduce((acc, item) => {
     const memberAlias = memberAliases.find(({ address }) => address === item) || null
 
-    acc.push({ address: item, alias: memberAlias ? memberAlias[0].alias : memberAlias })
+    acc.push({ address: item, alias: memberAlias ? memberAlias.alias : memberAlias })
 
     return acc
   }, [])
