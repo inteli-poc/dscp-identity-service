@@ -46,6 +46,21 @@ async function getMembersRoute({ app }, authToken) {
     })
 }
 
+async function getMemberByAliasOrAddressRoute({ app }, aliasOrAddress, authToken) {
+  return request(app)
+    .get(`/${API_MAJOR_VERSION}/members/${aliasOrAddress}`)
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json')
+    .set('Authorization', `Bearer ${authToken}`)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      console.error(`getMembersErr ${err}`)
+      return err
+    })
+}
+
 async function putMemberAliasRoute({ app }, authToken, address, { alias }) {
   return request(app)
     .put(`/${API_MAJOR_VERSION}/members/${address}`)
@@ -66,5 +81,6 @@ module.exports = {
   apiDocs,
   healthCheck,
   getMembersRoute,
+  getMemberByAliasOrAddressRoute,
   putMemberAliasRoute,
 }

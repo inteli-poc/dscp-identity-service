@@ -21,7 +21,7 @@ async function getMemberAliasesDb(members) {
 }
 
 async function getMembersByAddressDb({ address }) {
-  return client('members AS m').select(['m.address']).where({ address })
+  return client('members AS m').select(['m.address', 'm.alias']).where({ address })
 }
 
 async function getMembersByAliasDb({ alias }) {

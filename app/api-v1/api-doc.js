@@ -35,14 +35,29 @@ const apiDoc = {
         properties: {
           address: {
             description: 'token of the member',
-            type: 'string',
+            allOf: [{ $ref: '#/components/schemas/Address' }],
           },
           alias: {
             description: 'alias of the member',
-            type: 'string',
+            allOf: [{ $ref: '#/components/schemas/Alias' }],
           },
         },
         required: ['address', 'alias'],
+      },
+      Address: {
+        type: 'string',
+        minLength: 48,
+        maxLength: 48,
+        pattern: '^[1-9A-HJ-NP-Za-km-z]{48}$',
+      },
+      Alias: {
+        type: 'string',
+        minLength: 1,
+        maxLength: 255,
+        pattern: '(?!^[1-9A-HJ-NP-Za-km-z]{48}$)^.{1,255}$',
+      },
+      AddressOrAlias: {
+        oneOf: [{ $ref: '#/components/schemas/Alias' }, { $ref: '#/components/schemas/Address' }],
       },
     },
     securitySchemes: {

@@ -3,17 +3,9 @@ const OpenAPIResponseValidator = require('openapi-response-validator').default
 const apiDocResponses = require('../api-doc-responses')
 const apiDoc = require('../api-doc')
 
-const memberAliasesResponses = {
+const memberAddressResponses = {
   200: {
-    description: 'Update member alias',
-    content: {
-      'application/json': {
-        schema: apiDoc.components.schemas.Member,
-      },
-    },
-  },
-  201: {
-    description: 'Create member alias',
+    description: 'Get member address from alias',
     content: {
       'application/json': {
         schema: apiDoc.components.schemas.Member,
@@ -23,9 +15,9 @@ const memberAliasesResponses = {
   ...apiDocResponses,
 }
 
-const validateMemberAliasesResponse = (statusCode, result) => {
+const validateMemberAddressResponse = (statusCode, result) => {
   const responseValidator = new OpenAPIResponseValidator({
-    responses: memberAliasesResponses,
+    responses: memberAddressResponses,
     components: apiDoc.components,
   })
 
@@ -33,6 +25,6 @@ const validateMemberAliasesResponse = (statusCode, result) => {
 }
 
 module.exports = {
-  memberAliasesResponses,
-  validateMemberAliasesResponse,
+  memberAddressResponses,
+  validateMemberAddressResponse,
 }

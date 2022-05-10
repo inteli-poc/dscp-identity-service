@@ -20,7 +20,7 @@ const membersResponses = {
 }
 
 const validateMembersResponse = (statusCode, result) => {
-  const responseValidator = new OpenAPIResponseValidator({ responses: membersResponses })
+  const responseValidator = new OpenAPIResponseValidator({ responses: membersResponses, components: apiDoc.components })
 
   return responseValidator.validateResponse(statusCode, result)
 }

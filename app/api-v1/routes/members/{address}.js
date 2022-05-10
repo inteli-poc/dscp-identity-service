@@ -30,6 +30,7 @@ module.exports = function (apiService) {
         required: true,
         name: 'address',
         allowEmptyValue: true,
+        schema: { $ref: '#/components/schemas/Address' },
       },
     ],
     requestBody: {
