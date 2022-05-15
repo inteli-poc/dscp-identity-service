@@ -8,7 +8,7 @@ const {
   getMembersRoute,
   getMemberByAliasOrAddressRoute,
   putMemberAliasRoute,
-  getSelfAddress
+  getSelfAddress,
 } = require('../helper/routeHelper')
 const USER_ALICE_TOKEN = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'
 const ALICE_STASH = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'
@@ -175,9 +175,8 @@ describe('routes', function () {
       expect(res.body).deep.equal(expectedResult)
     })
 
-    test('get self address or returmn default', async function() {
-      const { status, text } = await getSelfAddress(app,authToken)
-
+    test('get self address or returmn default', async function () {
+      const { status, text } = await getSelfAddress(app, authToken)
       expect(status).to.equal(200)
       expect(text).to.equal('5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty')
     })

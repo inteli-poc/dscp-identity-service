@@ -1,14 +1,11 @@
-const logger = require('../../logger')
 const { selfResponses, validateSelfResponse } = require('../validators/selfResponseValidator')
 const { SELF_ADDRESS } = require('../../env')
 
-module.exports = function (apiService) {
+module.exports = function () {
   const doc = {
-  
     GET: async function (req, res) {
-      if (validateSelfResponse(400, SELF_ADDRESS)) {
-        return res.status(400).json(validationErrors)
-      }
+      const errors = validateSelfResponse(400, SELF_ADDRESS, res)
+      if (errors) return res.status(400).send(errors)
       res.status(200).send(SELF_ADDRESS)
     },
   }
