@@ -4,6 +4,7 @@ const { SELF_ADDRESS } = require('../../env')
 
 module.exports = function (apiService) {
   const doc = {
+  
     GET: async function (req, res) {
       if (validateSelfResponse(400, SELF_ADDRESS)) {
         return res.status(400).json(validationErrors)
@@ -16,7 +17,7 @@ module.exports = function (apiService) {
     summary: 'Get self address',
     responses: selfResponses,
     security: [{ bearerAuth: [] }],
-    tags: ['address'],
+    tags: ['members'],
   }
 
   return doc

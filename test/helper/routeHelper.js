@@ -77,10 +77,26 @@ async function putMemberAliasRoute({ app }, authToken, address, { alias }) {
     })
 }
 
+async function getSelfAddress({ app }, authToken) {
+  return request(app)
+    .get(`/${API_MAJOR_VERSION}/self`)
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json')
+    .set('Authorization', `Bearer ${authToken}`)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      console.error(`getSelfAddressError: ${err}`)
+      return err
+    })
+}
+
 module.exports = {
   apiDocs,
   healthCheck,
   getMembersRoute,
+  getSelfAddress,
   getMemberByAliasOrAddressRoute,
   putMemberAliasRoute,
 }

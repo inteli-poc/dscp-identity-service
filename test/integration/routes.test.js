@@ -4,7 +4,12 @@ const { expect } = require('chai')
 const nock = require('nock')
 
 const { createHttpServer } = require('../../app/server')
-const { getMembersRoute, getMemberByAliasOrAddressRoute, putMemberAliasRoute } = require('../helper/routeHelper')
+const {
+  getMembersRoute,
+  getMemberByAliasOrAddressRoute,
+  putMemberAliasRoute,
+  getSelfAddress
+} = require('../helper/routeHelper')
 const USER_ALICE_TOKEN = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'
 const ALICE_STASH = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'
 const USER_BOB_TOKEN = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty'
@@ -13,6 +18,7 @@ const { AUTH_ISSUER, AUTH_AUDIENCE } = require('../../app/env')
 const { cleanup } = require('../seeds/members')
 
 describe('routes', function () {
+  this.timeout(3000)
   before(async () => {
     nock.disableNetConnect()
     nock.enableNetConnect((host) => host.includes('127.0.0.1') || host.includes('localhost'))
@@ -167,6 +173,13 @@ describe('routes', function () {
 
       expect(res.status).to.equal(200)
       expect(res.body).deep.equal(expectedResult)
+    })
+
+    test('get self address or returmn default', async function() {
+      const { status, text } = await getSelfAddress(app,authToken)
+
+      expect(status).to.equal(200)
+      expect(text).to.equal('5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty')
     })
   })
 })

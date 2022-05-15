@@ -3,19 +3,17 @@ const OpenAPIResponseValidator = require('openapi-response-validator').default
 const apiDocResponses = require('../api-doc-responses')
 const apiDoc = require('../api-doc')
 
+
 const selfResponses = {
   200: {
-    description: 'Return self address',
+    description: 'Get member address from alias',
     content: {
-      content: {
-        'application/json': {
-          schema: apiDoc.components.schemas.Address,
-        },
+      'application/json': {
+        schema: apiDoc.components.schemas.Address,
       },
     },
   },
-  400: apiDocResponses['400'],
-  default: apiDocResponses.default,
+  ...apiDocResponses,
 }
 
 const validateSelfResponse = (statusCode, result) => {
