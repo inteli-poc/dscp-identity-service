@@ -5,7 +5,8 @@ config:
   dbName: dscp
   dbPort: 5432
   enableLivenessProbe: true
-  selfAddress: 5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty # dev wallet address
+  # dev wallet address
+  selfAddress: 5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
   auth:
     jwksUri: https://dscp.eu.auth0.com/.well-known/jwks.json
     audience: dscp-test
