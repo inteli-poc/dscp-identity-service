@@ -15,3 +15,4 @@ data:
   authAudience: {{ .Values.config.auth.audience | quote }}
   authIssuer: {{ .Values.config.auth.issuer | quote }}
   authTokenUrl: {{ .Values.config.auth.tokenUrl | quote }}
+  selfAddress: {{ .Values.config.selfAddress }}

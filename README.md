@@ -59,6 +59,7 @@ npx knex migrate:latest --env test
 | DB_NAME           |    N     | `dscp`  | Name of the database to connect to                                                                                   |
 | DB_USERNAME       |    Y     |    -    | Username to connect to the database with                                                                             |
 | DB_PASSWORD       |    Y     |    -    | Password to connect to the database with                                                                             |
+| SELF_ADDRESS      |    N     |    -    | Instance wallet address that is returned by `/self` endpoint                                                         |
 
 ## Running the API
 
