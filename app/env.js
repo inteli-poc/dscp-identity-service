@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === 'test') {
 const vars = envalid.cleanEnv(
   process.env,
   {
+    SELF_ADDRESS: envalid.str({ devDefault: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty' }),
     SERVICE_TYPE: envalid.str({ default: 'dscp-identity-service'.toUpperCase().replace(/-/g, '_') }),
     PORT: envalid.port({ default: 3002 }),
     API_HOST: envalid.host({ devDefault: 'localhost' }),

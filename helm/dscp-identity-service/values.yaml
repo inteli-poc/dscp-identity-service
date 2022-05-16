@@ -5,6 +5,8 @@ config:
   dbName: dscp
   dbPort: 5432
   enableLivenessProbe: true
+  # dev wallet address
+  selfAddress: 5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
   auth:
     jwksUri: https://dscp.eu.auth0.com/.well-known/jwks.json
     audience: dscp-test
@@ -21,7 +23,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/digicatapult/dscp-identity-service
   pullPolicy: IfNotPresent
-  tag: 'v1.1.0'
+  tag: 'v1.2.0'
   pullSecrets: ['ghcr-digicatapult']
 
 postgresql:
