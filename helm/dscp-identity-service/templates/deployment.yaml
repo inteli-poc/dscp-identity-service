@@ -24,11 +24,6 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           command: [ 'npx', 'knex', "migrate:latest", "--env", "production" ]
           env:
-            - name: SELF_ADDRESS
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "dscp-identity-service.fullname" . }}-config
-                  key: selfAddress
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
@@ -59,6 +54,11 @@ spec:
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           env:
+            - name: SELF_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
+                  key: selfAddress
             - name: PORT
               valueFrom:
                 configMapKeyRef:
