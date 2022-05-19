@@ -15,6 +15,7 @@ config:
 
 ingress:
   # annotations: {}
+  # className
   paths:
     - /v1/members
 
@@ -23,7 +24,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/digicatapult/dscp-identity-service
   pullPolicy: IfNotPresent
-  tag: 'v1.2.1'
+  tag: 'v1.2.2'
   pullSecrets: ['ghcr-digicatapult']
 
 postgresql:
