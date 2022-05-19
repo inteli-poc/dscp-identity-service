@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dscp-identity-service
+  name: {{ include "dscp-identity-service.fullname" . }}
   labels:
     {{- include "dscp-identity-service.labels" . | nindent 4 }}
 spec:
