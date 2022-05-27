@@ -11,8 +11,11 @@ data:
   dbHost: {{ include "dscp-identity-service.postgresql.fullname" . }}
   dbPort: {{ .Values.config.dbPort | quote }}
   dbName: {{ .Values.config.dbName }}
+  {{- if eq .Values.config.auth.type "JWT" }}
   authJwksUri: {{ .Values.config.auth.jwksUri | quote }}
   authAudience: {{ .Values.config.auth.audience | quote }}
   authIssuer: {{ .Values.config.auth.issuer | quote }}
   authTokenUrl: {{ .Values.config.auth.tokenUrl | quote }}
+  {{- end }}
   selfAddress: {{ .Values.config.selfAddress }}
+  authType: {{ .Values.config.auth.type }}

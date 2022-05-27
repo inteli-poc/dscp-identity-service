@@ -14,8 +14,11 @@ const USER_ALICE_TOKEN = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'
 const ALICE_STASH = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'
 const USER_BOB_TOKEN = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty'
 const BOB_STASH = '5HpG9w8EBLe5XCrbczpwq5TSXvedjrBGCwqxK1iQ7qUsSWFc'
-const { AUTH_ISSUER, AUTH_AUDIENCE } = require('../../app/env')
+const { AUTH_ISSUER, AUTH_AUDIENCE, AUTH_TYPE } = require('../../app/env')
 const { cleanup } = require('../seeds/members')
+
+const describeAuthOnly = AUTH_TYPE === 'JWT' ? describe : describe.skip
+const describeNoAuthOnly = AUTH_TYPE === 'NONE' ? describe : describe.skip
 
 describe('routes', function () {
   this.timeout(3000)
@@ -29,7 +32,7 @@ describe('routes', function () {
     nock.cleanAll()
   })
 
-  describe('authenticated routes', function () {
+  describeAuthOnly('authenticated', function () {
     let app
     let jwksMock
     let authToken
@@ -175,8 +178,85 @@ describe('routes', function () {
       expect(res.body).deep.equal(expectedResult)
     })
 
-    test('get self address or returmn default', async function () {
+    test('get self address or return default', async function () {
       const { status, text } = await getSelfAddress(app, authToken)
+      expect(status).to.equal(200)
+      expect(text).to.equal('5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty')
+    })
+  })
+
+  describeNoAuthOnly('no auth', function () {
+    let app
+
+    before(async function () {
+      await cleanup()
+
+      app = await createHttpServer()
+    })
+
+    afterEach(async function () {
+      await cleanup()
+    })
+
+    test('return membership members', async function () {
+      const expectedResult = [
+        { address: USER_BOB_TOKEN, alias: null },
+        { address: ALICE_STASH, alias: null },
+        { address: USER_ALICE_TOKEN, alias: null },
+        { address: BOB_STASH, alias: null },
+      ]
+
+      const res = await getMembersRoute(app, null)
+
+      expect(res.status).to.equal(200)
+      expect(res.body).deep.equal(expectedResult)
+    })
+
+    test('return membership members with aliases', async function () {
+      const expectedResult = [
+        { address: USER_BOB_TOKEN, alias: null },
+        { address: ALICE_STASH, alias: 'ALICE_STASH' },
+        { address: USER_ALICE_TOKEN, alias: null },
+        { address: BOB_STASH, alias: null },
+      ]
+
+      await putMemberAliasRoute(app, null, ALICE_STASH, { alias: 'ALICE_STASH' })
+      const res = await getMembersRoute(app, null)
+
+      expect(res.status).to.equal(200)
+      expect(res.body).deep.equal(expectedResult)
+    })
+
+    test('get member by alias', async function () {
+      await putMemberAliasRoute(app, null, ALICE_STASH, { alias: 'ALICE_STASH' })
+
+      const expectedResult = {
+        address: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
+        alias: 'ALICE_STASH',
+      }
+
+      const res = await getMemberByAliasOrAddressRoute(app, 'ALICE_STASH', null)
+
+      expect(res.status).to.equal(200)
+      expect(res.body).deep.equal(expectedResult)
+    })
+
+    test('get member by address', async function () {
+      await putMemberAliasRoute(app, null, ALICE_STASH, { alias: 'ALICE_STASH' })
+
+      const expectedResult = {
+        address: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
+        alias: 'ALICE_STASH',
+      }
+
+      const res = await getMemberByAliasOrAddressRoute(app, '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY', null)
+
+      expect(res.status).to.equal(200)
+      expect(res.body).deep.equal(expectedResult)
+    })
+
+    test('get self address or return default', async function () {
+      const { status, text } = await getSelfAddress(app, null)
       expect(status).to.equal(200)
       expect(text).to.equal('5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty')
     })

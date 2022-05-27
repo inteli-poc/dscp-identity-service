@@ -1,5 +1,6 @@
 const logger = require('../../logger')
 const { membershipReducer } = require('../../util/appUtil')
+const { getDefaultSecurity } = require('../../util/authUtil')
 const { membersResponses, validateMembersResponse } = require('../validators/membersResponseValidator')
 
 module.exports = function (apiService) {
@@ -31,7 +32,7 @@ module.exports = function (apiService) {
   doc.GET.apiDoc = {
     summary: 'Get members',
     responses: membersResponses,
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['members'],
   }
 

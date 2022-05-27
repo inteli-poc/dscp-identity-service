@@ -2,6 +2,7 @@ const {
   memberAliasesResponses,
   validateMemberAliasesResponse,
 } = require('../../validators/memberAliasesResponseValidator')
+const { getDefaultSecurity } = require('../../../util/authUtil')
 
 module.exports = function (apiService) {
   const doc = {
@@ -49,7 +50,7 @@ module.exports = function (apiService) {
       },
     },
     responses: memberAliasesResponses,
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['members'],
   }
 

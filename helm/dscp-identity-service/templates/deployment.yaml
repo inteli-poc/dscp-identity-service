@@ -76,6 +76,7 @@ spec:
                   key: nodeHost
             - name: API_PORT
               value: "9944"
+            {{- if eq .Values.config.auth.type "JWT" }}
             - name: AUTH_JWKS_URI
               valueFrom:
                 configMapKeyRef:
@@ -96,6 +97,7 @@ spec:
                 configMapKeyRef:
                   name: {{ include "dscp-identity-service.fullname" . }}-config
                   key: authTokenUrl
+            {{- end }}
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
@@ -121,6 +123,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "dscp-identity-service.fullname" . }}-secret
                   key: dbPassword
+            - name: AUTH_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "dscp-identity-service.fullname" . }}-config
+                  key: authType
           ports:
             - containerPort: {{ .Values.config.port }}
               name: http

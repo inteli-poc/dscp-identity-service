@@ -1,5 +1,6 @@
 const { selfResponses, validateSelfResponse } = require('../validators/selfResponseValidator')
 const { SELF_ADDRESS } = require('../../env')
+const { getDefaultSecurity } = require('../../util/authUtil')
 
 module.exports = function () {
   const doc = {
@@ -13,7 +14,7 @@ module.exports = function () {
   doc.GET.apiDoc = {
     summary: 'Get self address',
     responses: selfResponses,
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['members'],
   }
 

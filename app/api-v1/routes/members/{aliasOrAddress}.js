@@ -3,6 +3,7 @@ const {
   validateMemberAddressResponse,
 } = require('../../validators/memberAddressResponseValidator')
 const apiDoc = require('../../api-doc')
+const { getDefaultSecurity } = require('../../../util/authUtil')
 
 const addrRegex = new RegExp(apiDoc.components.schemas.Address.pattern)
 const aliasRegex = new RegExp(apiDoc.components.schemas.Alias.pattern)
@@ -50,7 +51,7 @@ module.exports = function (apiService) {
       },
     ],
     responses: memberAddressResponses,
-    security: [{ bearerAuth: [] }],
+    security: getDefaultSecurity(),
     tags: ['members'],
   }
 

@@ -8,6 +8,7 @@ config:
   # dev wallet address
   selfAddress: 5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
   auth:
+    type: NONE
     jwksUri: https://dscp.eu.auth0.com/.well-known/jwks.json
     audience: dscp-test
     issuer: https://dscp.eu.auth0.com/
@@ -24,7 +25,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/digicatapult/dscp-identity-service
   pullPolicy: IfNotPresent
-  tag: 'v1.2.3'
+  tag: 'v1.3.0'
   pullSecrets: ['ghcr-digicatapult']
 
 postgresql:

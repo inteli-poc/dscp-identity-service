@@ -1,7 +1,7 @@
 const jwksRsa = require('jwks-rsa')
 const jwt = require('jsonwebtoken')
 
-const { AUTH_AUDIENCE, AUTH_JWKS_URI, AUTH_ISSUER } = require('../env')
+const { AUTH_AUDIENCE, AUTH_JWKS_URI, AUTH_ISSUER, AUTH_TYPE } = require('../env')
 const logger = require('../logger')
 
 const client = jwksRsa({
@@ -47,6 +47,18 @@ const verifyJwks = async (authHeader) => {
   })
 }
 
+const getDefaultSecurity = () => {
+  switch (AUTH_TYPE) {
+    case 'NONE':
+      return []
+    case 'JWT':
+      return [{ bearerAuth: [] }]
+    default:
+      return []
+  }
+}
+
 module.exports = {
   verifyJwks,
+  getDefaultSecurity,
 }
