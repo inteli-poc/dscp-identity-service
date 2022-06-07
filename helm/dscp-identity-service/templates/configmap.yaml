@@ -15,7 +15,6 @@ data:
   authJwksUri: {{ .Values.config.auth.jwksUri | quote }}
   authAudience: {{ .Values.config.auth.audience | quote }}
   authIssuer: {{ .Values.config.auth.issuer | quote }}
-  authTokenUrl: {{ .Values.config.auth.tokenUrl | quote }}
   {{- end }}
   selfAddress: {{ .Values.config.selfAddress }}
   authType: {{ .Values.config.auth.type }}
