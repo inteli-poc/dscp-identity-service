@@ -179,9 +179,22 @@ describe('routes', function () {
     })
 
     test('get self address or return default', async function () {
-      const { status, text } = await getSelfAddress(app, authToken)
+      const { status, body } = await getSelfAddress(app, authToken)
       expect(status).to.equal(200)
-      expect(text).to.equal('5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty')
+      expect(body).to.deep.equal({
+        address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+        alias: null,
+      })
+    })
+
+    test('get self address with alias', async function () {
+      await putMemberAliasRoute(app, authToken, '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty', { alias: 'TEST' })
+      const { status, body } = await getSelfAddress(app, authToken)
+      expect(status).to.equal(200)
+      expect(body).to.deep.equal({
+        address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+        alias: 'TEST',
+      })
     })
   })
 
@@ -256,9 +269,22 @@ describe('routes', function () {
     })
 
     test('get self address or return default', async function () {
-      const { status, text } = await getSelfAddress(app, null)
+      const { status, body } = await getSelfAddress(app, null)
       expect(status).to.equal(200)
-      expect(text).to.equal('5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty')
+      expect(body).to.deep.equal({
+        address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+        alias: null,
+      })
+    })
+
+    test('get self address with alias', async function () {
+      await putMemberAliasRoute(app, null, '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty', { alias: 'TEST' })
+      const { status, body } = await getSelfAddress(app, null)
+      expect(status).to.equal(200)
+      expect(body).to.deep.equal({
+        address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+        alias: 'TEST',
+      })
     })
   })
 })

@@ -7,7 +7,7 @@ const selfResponses = {
     description: 'Get member address from alias',
     content: {
       'application/json': {
-        schema: apiDoc.components.schemas.Address,
+        schema: apiDoc.components.schemas.Member,
       },
     },
   },

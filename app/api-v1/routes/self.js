@@ -2,12 +2,14 @@ const { selfResponses, validateSelfResponse } = require('../validators/selfRespo
 const { SELF_ADDRESS } = require('../../env')
 const { getDefaultSecurity } = require('../../util/authUtil')
 
-module.exports = function () {
+module.exports = function (apiService) {
   const doc = {
     GET: async function (req, res) {
-      const errors = validateSelfResponse(400, SELF_ADDRESS, res)
+      const [self] = await apiService.getMembersByAddress(SELF_ADDRESS)
+      const response = self || { address: SELF_ADDRESS, alias: null }
+      const errors = validateSelfResponse(400, response)
       if (errors) return res.status(400).send(errors)
-      res.status(200).send(SELF_ADDRESS)
+      res.status(200).json(response)
     },
   }
 
