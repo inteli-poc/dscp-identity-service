@@ -4,7 +4,6 @@ config:
   logLevel: info
   dbName: dscp
   dbPort: 5432
-  enableLivenessProbe: true
   # dev wallet address
   selfAddress: 5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
   auth:
@@ -13,18 +12,28 @@ config:
     audience: dscp-test
     issuer: https://dscp.eu.auth0.com/
 
+deployment:
+  annotations: {}
+  livenessProbe:
+    enabled: true
+  replicaCount: 1
+
 ingress:
-  # annotations: {}
+  annotations: {}
   # className
+  enabled: true
   paths:
     - /v1/members
 
-replicaCount: 1
+service:
+  annotations: {}
+  enabled: true
+  port: 80
 
 image:
   repository: ghcr.io/digicatapult/dscp-identity-service
   pullPolicy: IfNotPresent
-  tag: 'v1.4.0'
+  tag: 'v1.5.0'
   pullSecrets: ['ghcr-digicatapult']
 
 postgresql:

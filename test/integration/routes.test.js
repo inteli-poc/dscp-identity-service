@@ -11,9 +11,8 @@ const {
   getSelfAddress,
 } = require('../helper/routeHelper')
 const USER_ALICE_TOKEN = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'
-const ALICE_STASH = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'
+const USER_CHARLIE_TOKEN = '5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y'
 const USER_BOB_TOKEN = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty'
-const BOB_STASH = '5HpG9w8EBLe5XCrbczpwq5TSXvedjrBGCwqxK1iQ7qUsSWFc'
 const { AUTH_ISSUER, AUTH_AUDIENCE, AUTH_TYPE } = require('../../app/env')
 const { cleanup } = require('../seeds/members')
 
@@ -61,9 +60,8 @@ describe('routes', function () {
     test('return membership members', async function () {
       const expectedResult = [
         { address: USER_BOB_TOKEN, alias: null },
-        { address: ALICE_STASH, alias: null },
+        { address: USER_CHARLIE_TOKEN, alias: null },
         { address: USER_ALICE_TOKEN, alias: null },
-        { address: BOB_STASH, alias: null },
       ]
 
       const res = await getMembersRoute(app, authToken)
@@ -75,12 +73,11 @@ describe('routes', function () {
     test('return membership members with aliases', async function () {
       const expectedResult = [
         { address: USER_BOB_TOKEN, alias: null },
-        { address: ALICE_STASH, alias: 'ALICE_STASH' },
+        { address: USER_CHARLIE_TOKEN, alias: 'CHARLIE' },
         { address: USER_ALICE_TOKEN, alias: null },
-        { address: BOB_STASH, alias: null },
       ]
 
-      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
+      await putMemberAliasRoute(app, authToken, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
       const res = await getMembersRoute(app, authToken)
 
       expect(res.status).to.equal(200)
@@ -88,9 +85,9 @@ describe('routes', function () {
     })
 
     test('update non-existing member alias', async function () {
-      const expectedResult = { address: ALICE_STASH, alias: 'ALICE_STASH' }
+      const expectedResult = { address: USER_CHARLIE_TOKEN, alias: 'CHARLIE' }
 
-      const res = await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
+      const res = await putMemberAliasRoute(app, authToken, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
 
       expect(res.status).to.equal(201)
       expect(res.body).deep.equal(expectedResult)
@@ -99,18 +96,18 @@ describe('routes', function () {
     test('update existing member alias', async function () {
       const expectedResult = { message: 'member alias already exists' }
 
-      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
-      const res = await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
+      await putMemberAliasRoute(app, authToken, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
+      const res = await putMemberAliasRoute(app, authToken, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
 
       expect(res.status).to.equal(409)
       expect(res.body).deep.equal(expectedResult)
     })
 
     test('update existing member alias', async function () {
-      const expectedResult = { address: ALICE_STASH, alias: 'ALICE_STASH_UPDATE' }
+      const expectedResult = { address: USER_CHARLIE_TOKEN, alias: 'CHARLIE_UPDATE' }
 
-      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
-      const res = await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH_UPDATE' })
+      await putMemberAliasRoute(app, authToken, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
+      const res = await putMemberAliasRoute(app, authToken, USER_CHARLIE_TOKEN, { alias: 'CHARLIE_UPDATE' })
 
       expect(res.status).to.equal(200)
       expect(res.body).deep.equal(expectedResult)
@@ -119,32 +116,32 @@ describe('routes', function () {
     test('update alternative non-existing member with duplicate alias', async function () {
       const expectedResult = { message: 'member alias already exists' }
 
-      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
-      const res = await putMemberAliasRoute(app, authToken, BOB_STASH, { alias: 'ALICE_STASH' })
+      await putMemberAliasRoute(app, authToken, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
+      const res = await putMemberAliasRoute(app, authToken, USER_BOB_TOKEN, { alias: 'CHARLIE' })
 
       expect(res.status).to.equal(409)
       expect(res.body).deep.equal(expectedResult)
     })
 
     test('get member by alias', async function () {
-      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
+      await putMemberAliasRoute(app, authToken, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
 
       const expectedResult = {
-        address: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
-        alias: 'ALICE_STASH',
+        address: '5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y',
+        alias: 'CHARLIE',
       }
 
-      const res = await getMemberByAliasOrAddressRoute(app, 'ALICE_STASH', authToken)
+      const res = await getMemberByAliasOrAddressRoute(app, 'CHARLIE', authToken)
 
       expect(res.status).to.equal(200)
       expect(res.body).deep.equal(expectedResult)
     })
 
     test('get member by incorrect alias', async function () {
-      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
+      await putMemberAliasRoute(app, authToken, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
       const expectedResult = { message: 'Member does not exist' }
 
-      const res = await getMemberByAliasOrAddressRoute(app, 'ALICE_STASH_UPDATE', authToken)
+      const res = await getMemberByAliasOrAddressRoute(app, 'CHARLIE_UPDATE', authToken)
 
       expect(res.status).to.equal(404)
       expect(res.body).deep.equal(expectedResult)
@@ -161,16 +158,16 @@ describe('routes', function () {
     })
 
     test('get member by address', async function () {
-      await putMemberAliasRoute(app, authToken, ALICE_STASH, { alias: 'ALICE_STASH' })
+      await putMemberAliasRoute(app, authToken, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
 
       const expectedResult = {
-        address: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
-        alias: 'ALICE_STASH',
+        address: '5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y',
+        alias: 'CHARLIE',
       }
 
       const res = await getMemberByAliasOrAddressRoute(
         app,
-        '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
+        '5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y',
         authToken
       )
 
@@ -214,9 +211,8 @@ describe('routes', function () {
     test('return membership members', async function () {
       const expectedResult = [
         { address: USER_BOB_TOKEN, alias: null },
-        { address: ALICE_STASH, alias: null },
+        { address: USER_CHARLIE_TOKEN, alias: null },
         { address: USER_ALICE_TOKEN, alias: null },
-        { address: BOB_STASH, alias: null },
       ]
 
       const res = await getMembersRoute(app, null)
@@ -228,12 +224,11 @@ describe('routes', function () {
     test('return membership members with aliases', async function () {
       const expectedResult = [
         { address: USER_BOB_TOKEN, alias: null },
-        { address: ALICE_STASH, alias: 'ALICE_STASH' },
+        { address: USER_CHARLIE_TOKEN, alias: 'CHARLIE' },
         { address: USER_ALICE_TOKEN, alias: null },
-        { address: BOB_STASH, alias: null },
       ]
 
-      await putMemberAliasRoute(app, null, ALICE_STASH, { alias: 'ALICE_STASH' })
+      await putMemberAliasRoute(app, null, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
       const res = await getMembersRoute(app, null)
 
       expect(res.status).to.equal(200)
@@ -241,28 +236,28 @@ describe('routes', function () {
     })
 
     test('get member by alias', async function () {
-      await putMemberAliasRoute(app, null, ALICE_STASH, { alias: 'ALICE_STASH' })
+      await putMemberAliasRoute(app, null, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
 
       const expectedResult = {
-        address: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
-        alias: 'ALICE_STASH',
+        address: '5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y',
+        alias: 'CHARLIE',
       }
 
-      const res = await getMemberByAliasOrAddressRoute(app, 'ALICE_STASH', null)
+      const res = await getMemberByAliasOrAddressRoute(app, 'CHARLIE', null)
 
       expect(res.status).to.equal(200)
       expect(res.body).deep.equal(expectedResult)
     })
 
     test('get member by address', async function () {
-      await putMemberAliasRoute(app, null, ALICE_STASH, { alias: 'ALICE_STASH' })
+      await putMemberAliasRoute(app, null, USER_CHARLIE_TOKEN, { alias: 'CHARLIE' })
 
       const expectedResult = {
-        address: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
-        alias: 'ALICE_STASH',
+        address: '5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y',
+        alias: 'CHARLIE',
       }
 
-      const res = await getMemberByAliasOrAddressRoute(app, '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY', null)
+      const res = await getMemberByAliasOrAddressRoute(app, '5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y', null)
 
       expect(res.status).to.equal(200)
       expect(res.body).deep.equal(expectedResult)
