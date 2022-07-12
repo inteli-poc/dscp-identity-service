@@ -1,6 +1,6 @@
 {
   "name": "@digicatapult/dscp-identity-service",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Identity Service for DSCP",
   "main": "app/index.js",
   "scripts": {
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/digicatapult/dscp-identity-service#readme",
   "dependencies": {
-    "@digicatapult/dscp-node": "^3.8.0",
+    "@digicatapult/dscp-node": "^4.0.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
