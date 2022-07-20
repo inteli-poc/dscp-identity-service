@@ -23,7 +23,7 @@ jobs:
           fi
       - name: Check Dockerhub token
         run: |
-          if [ -z "${{ secrets.${{ secrets.DSCP_DOCKERHUB_TOKEN }} }}"]; then
+          if [ -z "${{ secrets.DSCP_DOCKERHUB_TOKEN }}"]; then
             echo "Must provide a DSCP_DOCKERHUB_TOKEN secret in order to run release workflow"
             exit 1
           fi
