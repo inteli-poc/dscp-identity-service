@@ -15,10 +15,16 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Check token
+      - name: Check Github token
         run: |
           if [ -z "${{ secrets.GITHUB_TOKEN }}"]; then
             echo "Must provide a GITHUB_TOKEN secret in order to run release workflow"
+            exit 1
+          fi
+      - name: Check Dockerhub token
+        run: |
+          if [ -z "${{ secrets.${{ secrets.DSCP_DOCKERHUB_TOKEN }} }}"]; then
+            echo "Must provide a DSCP_DOCKERHUB_TOKEN secret in order to run release workflow"
             exit 1
           fi
       - name: Get repository identifiers
@@ -89,8 +95,6 @@ jobs:
           context: .
           load: true
           file: ./Dockerfile
-          secrets: |
-            github=${{ secrets.GITHUB_TOKEN }}          
           tags: |
             ${{ needs.preconditions.outputs.repo_name }}:latest
           labels: |
@@ -123,8 +127,6 @@ jobs:
             ${{ runner.OS }}-
       - name: Install Packages
         run: npm ci
-        env:
-          GITHUB_PACKAGE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Lint
         run: npm run lint
   dependency-check:
@@ -148,8 +150,6 @@ jobs:
             ${{ runner.OS }}-
       - name: Install Packages
         run: npm ci
-        env:
-          GITHUB_PACKAGE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Dependency Check
         run: npm run depcheck
   tests:
@@ -176,8 +176,6 @@ jobs:
             ${{ runner.OS }}-
       - name: Install Packages
         run: npm ci
-        env:
-          GITHUB_PACKAGE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup dependencies
         run: docker-compose up -d
       - name: Sleep
@@ -235,11 +233,16 @@ jobs:
         with:
           buildkitd-flags: '--debug'
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: $GITHUB_ACTOR
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to Dockerhub Registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DSCP_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DSCP_DOCKERHUB_TOKEN }}
       - name: Publish multi-arch image
         uses: docker/build-push-action@v2
         with:
@@ -247,12 +250,12 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
-          secrets: |
-            github=${{ secrets.GITHUB_TOKEN }}
           platforms: linux/amd64, linux/arm64
           tags: |
             ghcr.io/${{ needs.preconditions.outputs.org_name }}/${{ needs.preconditions.outputs.repo_name }}:${{ needs.check-version.outputs.version }}
+            ${{ needs.preconditions.outputs.org_name }}/${{ needs.preconditions.outputs.repo_name }}:${{ needs.check-version.outputs.version }}
             ghcr.io/${{ needs.preconditions.outputs.org_name }}/${{ needs.preconditions.outputs.repo_name }}:latest
+            ${{ needs.preconditions.outputs.org_name }}/${{ needs.preconditions.outputs.repo_name }}:latest
           labels: |
             org.opencontainers.image.title=${{ needs.preconditions.outputs.repo_name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}

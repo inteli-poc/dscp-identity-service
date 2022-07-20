@@ -8,9 +8,6 @@ config:
   selfAddress: 5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
   auth:
     type: NONE
-    jwksUri: https://dscp.eu.auth0.com/.well-known/jwks.json
-    audience: dscp-test
-    issuer: https://dscp.eu.auth0.com/
 
 deployment:
   annotations: {}
@@ -31,9 +28,9 @@ service:
   port: 80
 
 image:
-  repository: ghcr.io/digicatapult/dscp-identity-service
+  repository: digicatapult/dscp-identity-service
   pullPolicy: IfNotPresent
-  tag: 'v1.6.0'
+  tag: 'v1.7.0'
   pullSecrets: ['ghcr-digicatapult']
 
 postgresql:

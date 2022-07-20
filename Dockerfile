@@ -17,7 +17,7 @@ WORKDIR /dscp-identity-service
 RUN npm -g install npm@8.x.x
 
 COPY . .
-RUN --mount=type=secret,id=github GITHUB_PACKAGE_TOKEN=$(cat /run/secrets/github) npm ci --production
+RUN npm ci --production
 
 ##################################################################################################
 
