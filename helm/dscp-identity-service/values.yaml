@@ -1,6 +1,8 @@
 config:
   # externalNodeHost: "" # This overrides dscpNode.enabled when setting the API_HOST envar
   port: 80
+  # externalOrigin: "http://localhost:3000" # Overrides the server url in the openapi spec
+  # externalPathPrefix: "alice/dscp-identity-service" # Path prefix to be applied to served API routes
   logLevel: info
   dbName: dscp
   dbPort: 5432
@@ -30,7 +32,7 @@ service:
 image:
   repository: digicatapult/dscp-identity-service
   pullPolicy: IfNotPresent
-  tag: 'v1.7.0'
+  tag: 'v1.7.1'
   pullSecrets: ['ghcr-digicatapult']
 
 postgresql:

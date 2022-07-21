@@ -43,6 +43,8 @@ npx knex migrate:latest --env test
 | :---------------- | :------: | :-----: | :------------------------------------------------------------------------------------------- |
 | SERVICE_TYPE      |    N     | `info`  | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`]         |
 | PORT              |    N     | `3001`  | The port for the API to listen on                                                            |
+| EXTERNAL_ORIGIN   |    N     |         | The origin from which the OpenAPI service is accessible. If not provided the value will default to `http://localhost:${PORT}` |
+| EXTERNAL_PATH_PREFIX |    N     |        | A path prefix from which this service is served |
 | LOG_LEVEL         |    N     | `info`  | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`]         |
 | API_VERSION       |    N     |    -    | API version                                                                                  |
 | API_MAJOR_VERSION |    N     |    -    | API major version                                                                            |

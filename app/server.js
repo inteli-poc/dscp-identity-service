@@ -7,7 +7,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const compression = require('compression')
 
-const { PORT, API_VERSION, API_MAJOR_VERSION, AUTH_TYPE } = require('./env')
+const { PORT, API_VERSION, API_MAJOR_VERSION, AUTH_TYPE, EXTERNAL_PATH_PREFIX } = require('./env')
 const logger = require('./logger')
 const v1ApiDoc = require('./api-v1/api-doc')
 const v1ApiService = require('./api-v1/services/apiService')
@@ -54,14 +54,18 @@ async function createHttpServer() {
     swaggerOptions: {
       urls: [
         {
-          url: `http://localhost:${PORT}/${API_MAJOR_VERSION}/api-docs`,
+          url: `${v1ApiDoc.servers[0].url}/api-docs`,
           name: 'IdentityService',
         },
       ],
     },
   }
 
-  app.use(`/${API_MAJOR_VERSION}/swagger`, swaggerUi.serve, swaggerUi.setup(null, options))
+  app.use(
+    EXTERNAL_PATH_PREFIX ? `/${EXTERNAL_PATH_PREFIX}/${API_MAJOR_VERSION}/swagger` : `/${API_MAJOR_VERSION}/swagger`,
+    swaggerUi.serve,
+    swaggerUi.setup(null, options)
+  )
 
   // Sorry - app.use checks arity
   // eslint-disable-next-line no-unused-vars
@@ -72,6 +76,12 @@ async function createHttpServer() {
       logger.error('Fallback Error %j', err.stack)
       res.status(500).send('Fatal error!')
     }
+  })
+
+  logger.trace('Registered Express routes: %s', {
+    toString: () => {
+      return JSON.stringify(app._router.stack.map(({ route }) => route && route.path).filter((p) => !!p))
+    },
   })
 
   return { app }

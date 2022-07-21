@@ -39,6 +39,8 @@ const vars = envalid.cleanEnv(
     DB_NAME: envalid.str({ default: 'dscp' }),
     DB_USERNAME: envalid.str({ devDefault: 'postgres' }),
     DB_PASSWORD: envalid.str({ devDefault: 'postgres' }),
+    EXTERNAL_ORIGIN: envalid.str({ default: '' }),
+    EXTERNAL_PATH_PREFIX: envalid.str({ default: '' }),
   },
   {
     strict: true,
