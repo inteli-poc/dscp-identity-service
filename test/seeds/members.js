@@ -1,9 +1,5 @@
-const { client } = require('../../app/db')
+import { client } from '../../app/db.js'
 
-const cleanup = async () => {
+export const cleanup = async () => {
   await client('members').del()
-}
-
-module.exports = {
-  cleanup,
 }

@@ -1,8 +1,10 @@
-const { selfResponses, validateSelfResponse } = require('../validators/selfResponseValidator')
-const { SELF_ADDRESS } = require('../../env')
-const { getDefaultSecurity } = require('../../util/authUtil')
+import { selfResponses, validateSelfResponse } from '../validators/selfResponseValidator.js'
+import env from '../../env.js'
+import { getDefaultSecurity } from '../../util/authUtil.js'
 
-module.exports = function (apiService) {
+const { SELF_ADDRESS } = env
+
+export default function (apiService) {
   const doc = {
     GET: async function (req, res) {
       const [self] = await apiService.getMembersByAddress(SELF_ADDRESS)

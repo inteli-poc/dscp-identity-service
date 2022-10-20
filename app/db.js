@@ -1,8 +1,8 @@
-const knex = require('knex')
+import knex from 'knex'
 
-const env = require('./env')
+import env from './env.js'
 
-const client = knex({
+export const client = knex({
   client: 'pg',
   migrations: {
     tableName: 'migrations',
@@ -16,31 +16,22 @@ const client = knex({
   },
 })
 
-async function getMemberAliasesDb(members) {
+export async function getMemberAliasesDb(members) {
   return client('members AS m').select(['m.address', 'm.alias']).whereIn('address', members).orderBy('alias')
 }
 
-async function getMembersByAddressDb({ address }) {
+export async function getMembersByAddressDb({ address }) {
   return client('members AS m').select(['m.address', 'm.alias']).where({ address })
 }
 
-async function getMembersByAliasDb({ alias }) {
+export async function getMembersByAliasDb({ alias }) {
   return client('members AS m').select(['m.address', 'm.alias']).where({ alias })
 }
 
-async function createMemberAliasDb({ address, alias }) {
+export async function createMemberAliasDb({ address, alias }) {
   return client('members').insert({ address, alias }).returning(['address', 'alias'])
 }
 
-async function updateMemberAliasDb({ address, alias }) {
+export async function updateMemberAliasDb({ address, alias }) {
   return client('members').update({ alias }).where({ address }).returning(['address', 'alias'])
-}
-
-module.exports = {
-  client,
-  getMemberAliasesDb,
-  getMembersByAddressDb,
-  getMembersByAliasDb,
-  createMemberAliasDb,
-  updateMemberAliasDb,
 }

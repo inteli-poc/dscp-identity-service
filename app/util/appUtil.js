@@ -1,8 +1,10 @@
-const { buildApi } = require('@digicatapult/dscp-node')
+import { buildApi } from '@digicatapult/dscp-node'
 
-const { API_HOST, API_PORT } = require('../env')
-const logger = require('../logger')
-const { getMemberAliasesDb } = require('../db')
+import env from '../env.js'
+import logger from '../logger.js'
+import { getMemberAliasesDb } from '../db.js'
+
+const { API_HOST, API_PORT } = env
 
 const { api } = buildApi({
   options: {
@@ -23,7 +25,7 @@ api.on('error', (err) => {
   logger.error(`Error from substrate node connection. Error was ${err.message || JSON.stringify(err)}`)
 })
 
-async function membershipReducer(members) {
+export async function membershipReducer(members) {
   members = members.toJSON() || []
 
   const memberAliases = await getMemberAliasesDb(members)
@@ -37,13 +39,8 @@ async function membershipReducer(members) {
   }, [])
 }
 
-async function getMembers() {
+export async function getMembers() {
   await api.isReady
 
   return api.query.membership.members()
-}
-
-module.exports = {
-  getMembers,
-  membershipReducer,
 }

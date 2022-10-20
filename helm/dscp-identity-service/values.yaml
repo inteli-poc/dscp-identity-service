@@ -32,13 +32,14 @@ service:
 image:
   repository: digicatapult/dscp-identity-service
   pullPolicy: IfNotPresent
-  tag: 'v1.7.1'
+  tag: 'v1.7.2'
   pullSecrets: ['ghcr-digicatapult']
 
 postgresql:
   enabled: true
-  postgresqlDatabase: dscp
-  postgresqlUsername: postgres
-  postgresqlPassword: postgres
+  auth:
+    database: dscp
+    username: identity_service
+    password: postgres
 dscpNode:
   enabled: true

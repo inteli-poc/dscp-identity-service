@@ -1,9 +1,11 @@
-const { describe, before, it } = require('mocha')
-const jsonChai = require('chai-json')
-const { expect } = require('chai').use(jsonChai)
+import { describe, before, it } from 'mocha'
+import jsonChai from 'chai-json'
+import chai from 'chai'
 
-const { createHttpServer } = require('../../app/server')
-const { apiDocs } = require('../helper/routeHelper')
+const { expect } = chai.use(jsonChai)
+
+import { createHttpServer } from '../../app/server.js'
+import { apiDocs } from '../helper/routeHelper.js'
 
 describe('api-docs', function () {
   let app

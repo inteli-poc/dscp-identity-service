@@ -15,7 +15,7 @@ services:
       - 9933:9933
     restart: on-failure
   postgres-data:
-    image: postgres:14.1-alpine
+    image: postgres:15.0-alpine
     ports:
       - 5432:5432
     volumes:

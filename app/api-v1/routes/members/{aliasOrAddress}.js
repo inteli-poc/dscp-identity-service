@@ -1,14 +1,14 @@
-const {
+import {
   memberAddressResponses,
   validateMemberAddressResponse,
-} = require('../../validators/memberAddressResponseValidator')
-const apiDoc = require('../../api-doc')
-const { getDefaultSecurity } = require('../../../util/authUtil')
+} from '../../validators/memberAddressResponseValidator.js'
+import apiDoc from '../../api-doc.js'
+import { getDefaultSecurity } from '../../../util/authUtil.js'
 
 const addrRegex = new RegExp(apiDoc.components.schemas.Address.pattern)
 const aliasRegex = new RegExp(apiDoc.components.schemas.Alias.pattern)
 
-module.exports = function (apiService) {
+export default function (apiService) {
   const doc = {
     GET: async function (req, res) {
       const { aliasOrAddress } = req.params

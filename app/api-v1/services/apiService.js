@@ -1,19 +1,19 @@
-const { getMembers: getMembersUtil } = require('../../util/appUtil')
-const { getMembersByAddressDb, createMemberAliasDb, updateMemberAliasDb, getMembersByAliasDb } = require('../../db')
+import { getMembers as getMembersUtil } from '../../util/appUtil.js'
+import { getMembersByAddressDb, createMemberAliasDb, updateMemberAliasDb, getMembersByAliasDb } from '../../db.js'
 
-async function findMembers() {
+export async function findMembers() {
   return getMembersUtil()
 }
 
-async function getMembersByAlias(alias) {
+export async function getMembersByAlias(alias) {
   return await getMembersByAliasDb({ alias })
 }
 
-async function getMembersByAddress(address) {
+export async function getMembersByAddress(address) {
   return await getMembersByAddressDb({ address })
 }
 
-async function putMemberAlias(address, { alias }) {
+export async function putMemberAlias(address, { alias }) {
   const members = await getMembersByAddressDb({ address })
 
   // check members by address for matching address and alias or members by alias
@@ -38,7 +38,7 @@ async function putMemberAlias(address, { alias }) {
   }
 }
 
-module.exports = {
+export default {
   findMembers,
   getMembersByAlias,
   getMembersByAddress,

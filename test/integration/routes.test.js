@@ -1,20 +1,25 @@
-const createJWKSMock = require('mock-jwks').default
-const { describe, test, before, afterEach } = require('mocha')
-const { expect } = require('chai')
-const nock = require('nock')
+import mockJwks from 'mock-jwks'
+import { describe, test, before, afterEach } from 'mocha'
+import { expect } from 'chai'
+import nock from 'nock'
 
-const { createHttpServer } = require('../../app/server')
-const {
+import { createHttpServer } from '../../app/server.js'
+import {
   getMembersRoute,
   getMemberByAliasOrAddressRoute,
   putMemberAliasRoute,
   getSelfAddress,
-} = require('../helper/routeHelper')
+} from '../helper/routeHelper.js'
+import env from '../../app/env.js'
+import { cleanup } from '../seeds/members.js'
+
+const createJWKSMock = mockJwks.default
+
+const { AUTH_ISSUER, AUTH_AUDIENCE, AUTH_TYPE } = env
+
 const USER_ALICE_TOKEN = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'
 const USER_CHARLIE_TOKEN = '5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y'
 const USER_BOB_TOKEN = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty'
-const { AUTH_ISSUER, AUTH_AUDIENCE, AUTH_TYPE } = require('../../app/env')
-const { cleanup } = require('../seeds/members')
 
 const describeAuthOnly = AUTH_TYPE === 'JWT' ? describe : describe.skip
 const describeNoAuthOnly = AUTH_TYPE === 'NONE' ? describe : describe.skip

@@ -1,19 +1,25 @@
-const express = require('express')
-const cors = require('cors')
-const pinoHttp = require('pino-http')
-const { initialize } = require('express-openapi')
-const swaggerUi = require('swagger-ui-express')
-const path = require('path')
-const bodyParser = require('body-parser')
-const compression = require('compression')
+import express from 'express'
+import cors from 'cors'
+import pinoHttp from 'pino-http'
+import { initialize } from 'express-openapi'
+import swaggerUi from 'swagger-ui-express'
+import path from 'path'
+import bodyParser from 'body-parser'
+import compression from 'compression'
 
-const { PORT, API_VERSION, API_MAJOR_VERSION, AUTH_TYPE, EXTERNAL_PATH_PREFIX } = require('./env')
-const logger = require('./logger')
-const v1ApiDoc = require('./api-v1/api-doc')
-const v1ApiService = require('./api-v1/services/apiService')
-const { verifyJwks } = require('./util/authUtil')
+import env from './env.js'
+import logger from './logger.js'
+import v1ApiDoc from './api-v1/api-doc.js'
+import v1ApiService from './api-v1/services/apiService.js'
+import { verifyJwks } from './util/authUtil.js'
 
-async function createHttpServer() {
+const { PORT, API_VERSION, API_MAJOR_VERSION, AUTH_TYPE, EXTERNAL_PATH_PREFIX } = env
+
+import url from 'url'
+const __filename = url.fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+export async function createHttpServer() {
   const app = express()
   const requestLogger = pinoHttp({ logger })
 
@@ -40,7 +46,7 @@ async function createHttpServer() {
         }
       : {}
 
-  initialize({
+  await initialize({
     app,
     apiDoc: v1ApiDoc,
     securityHandlers: securityHandlers,
@@ -88,7 +94,7 @@ async function createHttpServer() {
 }
 
 /* istanbul ignore next */
-async function startServer() {
+export async function startServer() {
   try {
     const { app } = await createHttpServer()
 
@@ -126,9 +132,8 @@ async function startServer() {
     setupGracefulExit({ sigName: 'SIGINT', server, exitCode: 0 })
     setupGracefulExit({ sigName: 'SIGTERM', server, exitCode: 143 })
   } catch (err) {
-    logger.fatal('Fatal error during initialisation: %j', err)
+    logger.fatal('Fatal error during initialisation: %j', err.message || err)
+    logger.fatal('callstack: %j', err.stack || null)
     process.exit(1)
   }
 }
-
-module.exports = { startServer, createHttpServer }

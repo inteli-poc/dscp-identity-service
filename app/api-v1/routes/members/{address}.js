@@ -1,10 +1,10 @@
-const {
+import {
   memberAliasesResponses,
   validateMemberAliasesResponse,
-} = require('../../validators/memberAliasesResponseValidator')
-const { getDefaultSecurity } = require('../../../util/authUtil')
+} from '../../validators/memberAliasesResponseValidator.js'
+import { getDefaultSecurity } from '../../../util/authUtil.js'
 
-module.exports = function (apiService) {
+export default function (apiService) {
   const doc = {
     PUT: async function (req, res) {
       const { address } = req.params

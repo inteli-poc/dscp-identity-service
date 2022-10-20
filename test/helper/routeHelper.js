@@ -1,9 +1,11 @@
 /* eslint no-console: "off" */
-const request = require('supertest')
+import request from 'supertest'
 
-const { API_MAJOR_VERSION } = require('../../app/env')
+import env from '../../app/env.js'
 
-async function apiDocs({ app }) {
+const { API_MAJOR_VERSION } = env
+
+export async function apiDocs({ app }) {
   return request(app)
     .get(`/${API_MAJOR_VERSION}/api-docs`)
     .set('Accept', 'application/json')
@@ -12,12 +14,12 @@ async function apiDocs({ app }) {
       return response
     })
     .catch((err) => {
-      console.error(`healthCheckErr ${err}`)
+      console.error(`apiDocs ${err}`)
       return err
     })
 }
 
-async function healthCheck({ app }) {
+export async function healthCheck({ app }) {
   return request(app)
     .get('/health')
     .set('Accept', 'application/json')
@@ -31,7 +33,7 @@ async function healthCheck({ app }) {
     })
 }
 
-async function getMembersRoute({ app }, authToken) {
+export async function getMembersRoute({ app }, authToken) {
   return request(app)
     .get(`/${API_MAJOR_VERSION}/members`)
     .set('Accept', 'application/json')
@@ -46,7 +48,7 @@ async function getMembersRoute({ app }, authToken) {
     })
 }
 
-async function getMemberByAliasOrAddressRoute({ app }, aliasOrAddress, authToken) {
+export async function getMemberByAliasOrAddressRoute({ app }, aliasOrAddress, authToken) {
   return request(app)
     .get(`/${API_MAJOR_VERSION}/members/${aliasOrAddress}`)
     .set('Accept', 'application/json')
@@ -61,7 +63,7 @@ async function getMemberByAliasOrAddressRoute({ app }, aliasOrAddress, authToken
     })
 }
 
-async function putMemberAliasRoute({ app }, authToken, address, { alias }) {
+export async function putMemberAliasRoute({ app }, authToken, address, { alias }) {
   return request(app)
     .put(`/${API_MAJOR_VERSION}/members/${address}`)
     .set('Accept', 'application/json')
@@ -77,7 +79,7 @@ async function putMemberAliasRoute({ app }, authToken, address, { alias }) {
     })
 }
 
-async function getSelfAddress({ app }, authToken) {
+export async function getSelfAddress({ app }, authToken) {
   return request(app)
     .get(`/${API_MAJOR_VERSION}/self`)
     .set('Accept', 'application/json')
@@ -90,13 +92,4 @@ async function getSelfAddress({ app }, authToken) {
       console.error(`getSelfAddressError: ${err}`)
       return err
     })
-}
-
-module.exports = {
-  apiDocs,
-  healthCheck,
-  getMembersRoute,
-  getSelfAddress,
-  getMemberByAliasOrAddressRoute,
-  putMemberAliasRoute,
 }

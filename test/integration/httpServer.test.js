@@ -1,9 +1,9 @@
-const { describe, before, test } = require('mocha')
-const { expect } = require('chai')
+import { describe, before, test } from 'mocha'
+import { expect } from 'chai'
 
-const { createHttpServer } = require('../../app/server')
-const { API_VERSION } = require('../../app/env')
-const { healthCheck } = require('../helper/routeHelper')
+import { createHttpServer } from '../../app/server.js'
+import env from '../../app/env.js'
+import { healthCheck } from '../helper/routeHelper.js'
 
 describe('health', function () {
   let app
@@ -13,7 +13,7 @@ describe('health', function () {
   })
 
   test('health check', async function () {
-    const expectedResult = { status: 'ok', version: API_VERSION }
+    const expectedResult = { status: 'ok', version: env.API_VERSION }
 
     const actualResult = await healthCheck(app)
     expect(actualResult.status).to.equal(200)

@@ -1,6 +1,6 @@
-const apiDoc = require('./api-doc')
+import apiDoc from './api-doc.js'
 
-module.exports = {
+export default {
   400: {
     description: 'Invalid request',
     content: {

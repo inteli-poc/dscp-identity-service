@@ -1,9 +1,11 @@
-const OpenAPIResponseValidator = require('openapi-response-validator').default
+import oaValidator from 'openapi-response-validator'
 
-const apiDocResponses = require('../api-doc-responses')
-const apiDoc = require('../api-doc')
+import apiDocResponses from '../api-doc-responses.js'
+import apiDoc from '../api-doc.js'
 
-const memberAliasesResponses = {
+const OpenAPIResponseValidator = oaValidator.default
+
+export const memberAliasesResponses = {
   200: {
     description: 'Update member alias',
     content: {
@@ -23,16 +25,11 @@ const memberAliasesResponses = {
   ...apiDocResponses,
 }
 
-const validateMemberAliasesResponse = (statusCode, result) => {
+export const validateMemberAliasesResponse = (statusCode, result) => {
   const responseValidator = new OpenAPIResponseValidator({
     responses: memberAliasesResponses,
     components: apiDoc.components,
   })
 
   return responseValidator.validateResponse(statusCode, result)
-}
-
-module.exports = {
-  memberAliasesResponses,
-  validateMemberAliasesResponse,
 }
