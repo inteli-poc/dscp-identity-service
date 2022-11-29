@@ -1,4 +1,4 @@
-import { buildApi } from '@digicatapult/dscp-node'
+import { ApiPromise, WsProvider } from '@polkadot/api'
 
 import env from '../env.js'
 import logger from '../logger.js'
@@ -6,12 +6,10 @@ import { getMemberAliasesDb } from '../db.js'
 
 const { API_HOST, API_PORT } = env
 
-const { api } = buildApi({
-  options: {
-    apiHost: API_HOST,
-    apiPort: API_PORT,
-  },
-})
+const provider = new WsProvider(`ws://${API_HOST}:${API_PORT}`)
+const api = new ApiPromise({ provider })
+
+api.isReadyOrError.catch(() => {}) // prevent unhandled promise rejection errors
 
 api.on('disconnected', () => {
   logger.warn(`Disconnected from substrate node at ${API_HOST}:${API_PORT}`)

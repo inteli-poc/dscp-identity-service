@@ -32,7 +32,7 @@ service:
 image:
   repository: digicatapult/dscp-identity-service
   pullPolicy: IfNotPresent
-  tag: 'v1.8.0'
+  tag: 'v1.8.1'
   pullSecrets: ['ghcr-digicatapult']
 
 postgresql:
