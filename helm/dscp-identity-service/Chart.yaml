@@ -1,8 +1,8 @@
 apiVersion: v2
 name: dscp-identity-service
-appVersion: '1.8.1'
+appVersion: '1.8.2'
 description: A Helm chart for dscp-identity-service
-version: '1.8.1'
+version: '1.8.2'
 type: application
 maintainers:
   - name: digicatapult
