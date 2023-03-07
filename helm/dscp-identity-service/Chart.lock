@@ -1,9 +1,0 @@
-dependencies:
-- name: postgresql
-  repository: https://charts.bitnami.com/bitnami
-  version: 11.9.11
-- name: dscp-node
-  repository: https://digicatapult.github.io/dscp-node/
-  version: 4.3.1
-digest: sha256:3307f5bbf694c81521348a892ed999e31921fb5dfdb2a08e3c14c23657afaf33
-generated: "2022-10-20T16:06:51.488853+01:00"
