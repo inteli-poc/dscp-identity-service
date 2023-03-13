@@ -58,7 +58,7 @@ npx knex migrate:latest --env test
 | DB_USERNAME          |    Y     |    -    | Username to connect to the database with                                                                                      |
 | DB_PASSWORD          |    Y     |    -    | Password to connect to the database with                                                                                      |
 | SELF_ADDRESS         |    N     |    -    | Instance wallet address that is returned by `/self` endpoint                                                                  |
-| AUTH_TYPE            |    N     | `NONE`  | Authentication type for routes on the service. Valid values: [`NONE`, `JWT`]                                                  |
+| AUTH_TYPE            |    N     | `NONE`  | Authentication type for routes on the service. Valid values: [`NONE`, `JWT`, `EXTERNAL`]                                      |
 
 The following environment variables are additionally used when `AUTH_TYPE : 'JWT'`
 
