@@ -1,4 +1,4 @@
-import mockJwks from 'mock-jwks'
+import createJWKSMock from 'mock-jwks'
 import { describe, test, before, afterEach } from 'mocha'
 import { expect } from 'chai'
 import nock from 'nock'
@@ -12,8 +12,6 @@ import {
 } from '../helper/routeHelper.js'
 import env from '../../app/env.js'
 import { cleanup } from '../seeds/members.js'
-
-const createJWKSMock = mockJwks.default
 
 const { AUTH_ISSUER, AUTH_AUDIENCE, AUTH_TYPE } = env
 
