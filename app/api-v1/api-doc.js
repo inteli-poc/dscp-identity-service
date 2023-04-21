@@ -1,6 +1,6 @@
 import env from '../env.js'
 
-const { PORT, API_VERSION, API_MAJOR_VERSION, EXTERNAL_ORIGIN, EXTERNAL_PATH_PREFIX } = env
+const { PORT, API_VERSION, API_MAJOR_VERSION, EXTERNAL_ORIGIN } = env
 
 let url = EXTERNAL_ORIGIN || `http://localhost:${PORT}`
 
