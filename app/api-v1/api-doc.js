@@ -13,7 +13,7 @@ const apiDoc = {
   },
   servers: [
     {
-      url,
+      url: EXTERNAL_PATH_PREFIX ? `${url}/${EXTERNAL_PATH_PREFIX}/${API_MAJOR_VERSION}` : url,
     },
   ],
   components: {
