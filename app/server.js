@@ -23,14 +23,15 @@ const __dirname = path.dirname(__filename)
 
 export async function createHttpServer() {
   const app = express()
+  const router = express.Router()
   const requestLogger = pinoHttp({ logger })
 
-  app.use(cors())
-  app.use(compression())
-  app.use(bodyParser.json())
+  router.use(cors())
+  router.use(compression())
+  router.use(bodyParser.json())
 
   client.register.clear()
-  app.use(
+  router.use(
     promBundle({
       includePath: true,
       promClient: {
@@ -41,12 +42,12 @@ export async function createHttpServer() {
     })
   )
 
-  app.get('/health', async (req, res) => {
+  router.get('/health', async (req, res) => {
     res.status(200).send({ version: API_VERSION, status: 'ok' })
     return
   })
 
-  app.use((req, res, next) => {
+  router.use((req, res, next) => {
     if (req.path !== '/health') requestLogger(req, res)
     next()
   })
@@ -81,15 +82,15 @@ export async function createHttpServer() {
     },
   }
 
-  app.use(
-    EXTERNAL_PATH_PREFIX ? `/${EXTERNAL_PATH_PREFIX}/${API_MAJOR_VERSION}/swagger` : `/${API_MAJOR_VERSION}/swagger`,
+  router.use(
+    `/${API_MAJOR_VERSION}/swagger`,
     swaggerUi.serve,
     swaggerUi.setup(null, options)
   )
 
-  // Sorry - app.use checks arity
+  // Sorry - router.use checks arity
   // eslint-disable-next-line no-unused-vars
-  app.use((err, req, res, next) => {
+  router.use((err, req, res, next) => {
     if (err.status) {
       res.status(err.status).send({ error: err.status === 401 ? 'Unauthorised' : err.message })
     } else {
@@ -100,10 +101,11 @@ export async function createHttpServer() {
 
   logger.trace('Registered Express routes: %s', {
     toString: () => {
-      return JSON.stringify(app._router.stack.map(({ route }) => route && route.path).filter((p) => !!p))
+      return JSON.stringify(router._router.stack.map(({ route }) => route && route.path).filter((p) => !!p))
     },
   })
 
+  app.use('/identity', router)
   return { app }
 }
 
