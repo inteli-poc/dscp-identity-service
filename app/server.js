@@ -16,7 +16,8 @@ import promBundle from 'express-prom-bundle'
 import client from 'prom-client'
 
 const { EXTERNAL_ORIGIN, PORT, API_VERSION, API_MAJOR_VERSION, AUTH_TYPE, EXTERNAL_PATH_PREFIX } = env
-const URL = EXTERNAL_ORIGIN || `http://localhost:${PORT}`
+let URL = EXTERNAL_ORIGIN || `http://localhost:${PORT}`
+URL = EXTERNAL_PATH_PREFIX ? `${URL}/${EXTERNAL_PATH_PREFIX}/${API_MAJOR_VERSION}` : `${URL}/${API_MAJOR_VERSION}`
 
 import url from 'url'
 const __filename = url.fileURLToPath(import.meta.url)
@@ -75,7 +76,7 @@ export async function createHttpServer() {
     swaggerOptions: {
       urls: [
         {
-          url: `${URL}/${EXTERNAL_PATH_PREFIX}/${API_MAJOR_VERSION}/api-docs`,
+          url: `${URL}/api-docs`,
           name: 'IdentityService',
         },
       ],
