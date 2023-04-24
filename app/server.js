@@ -15,7 +15,9 @@ import { verifyJwks } from './util/authUtil.js'
 import promBundle from 'express-prom-bundle'
 import client from 'prom-client'
 
-const { PORT, API_VERSION, API_MAJOR_VERSION, AUTH_TYPE, EXTERNAL_PATH_PREFIX } = env
+const { EXTERNAL_ORIGIN, PORT, API_VERSION, API_MAJOR_VERSION, AUTH_TYPE, EXTERNAL_PATH_PREFIX } = env
+let URL = EXTERNAL_ORIGIN || `http://localhost:${PORT}`
+URL = EXTERNAL_PATH_PREFIX ? `${URL}/${EXTERNAL_PATH_PREFIX}/${API_MAJOR_VERSION}` : `${URL}/${API_MAJOR_VERSION}`
 
 import url from 'url'
 const __filename = url.fileURLToPath(import.meta.url)
@@ -74,18 +76,14 @@ export async function createHttpServer() {
     swaggerOptions: {
       urls: [
         {
-          url: `${v1ApiDoc.servers[0].url}/api-docs`,
+          url: `${URL}/api-docs`,
           name: 'IdentityService',
         },
       ],
     },
   }
 
-  app.use(
-    EXTERNAL_PATH_PREFIX ? `/${EXTERNAL_PATH_PREFIX}/${API_MAJOR_VERSION}/swagger` : `/${API_MAJOR_VERSION}/swagger`,
-    swaggerUi.serve,
-    swaggerUi.setup(null, options)
-  )
+  app.use(`/${API_MAJOR_VERSION}/swagger`, swaggerUi.serve, swaggerUi.setup(null, options))
 
   // Sorry - app.use checks arity
   // eslint-disable-next-line no-unused-vars
