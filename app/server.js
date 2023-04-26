@@ -56,7 +56,7 @@ export async function createHttpServer() {
   const securityHandlers =
     AUTH_TYPE === 'JWT'
       ? {
-          bearerAuth: (req) => {
+          BearerAuth: (req) => {
             return verifyJwks(req.headers['authorization'])
           },
         }

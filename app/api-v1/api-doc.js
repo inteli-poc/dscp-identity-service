@@ -66,7 +66,7 @@ const apiDoc = {
       },
     },
     securitySchemes: {
-      bearerAuth: {
+      BearerAuth: {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
