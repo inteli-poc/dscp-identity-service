@@ -58,8 +58,8 @@ const apiDoc = {
       Alias: {
         type: 'string',
         minLength: 1,
-        maxLength: 255,
-        pattern: '(?!^[1-9A-HJ-NP-Za-km-z]{48}$)^.{1,255}$',
+        maxLength: 50,
+        pattern: '(?!^[1-9A-HJ-NP-Za-km-z]{48}$)^.{1,50}$',
       },
       AddressOrAlias: {
         oneOf: [{ $ref: '#/components/schemas/Alias' }, { $ref: '#/components/schemas/Address' }],

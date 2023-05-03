@@ -29,9 +29,10 @@ export async function membershipReducer(members) {
   const memberAliases = await getMemberAliasesDb(members)
 
   return members.reduce((acc, item) => {
-    const memberAlias = memberAliases.find(({ address }) => address === item) || null
+    const memberAlias = memberAliases.find(({ address }) => address === item)
 
-    acc.push({ address: item, alias: memberAlias ? memberAlias.alias : memberAlias })
+    // set alias as address if no alias found
+    acc.push({ address: item, alias: memberAlias ? memberAlias.alias : item })
 
     return acc
   }, [])
