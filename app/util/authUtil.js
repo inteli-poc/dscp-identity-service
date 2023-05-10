@@ -54,7 +54,8 @@ export const getDefaultSecurity = () => {
     case 'NONE':
       return []
     case 'JWT':
-      return [{ bearerAuth: [] }]
+    case 'EXTERNAL':
+      return [{ BearerAuth: [] }]
     default:
       return []
   }

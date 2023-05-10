@@ -7,11 +7,10 @@ const { SELF_ADDRESS } = env
 export default function (apiService) {
   const doc = {
     GET: async function (req, res) {
-      const [self] = await apiService.getMembersByAddress(SELF_ADDRESS)
-      const response = self || { address: SELF_ADDRESS, alias: null }
-      const errors = validateSelfResponse(400, response)
+      const self = await apiService.getMemberByAddress(SELF_ADDRESS)
+      const errors = validateSelfResponse(400, self)
       if (errors) return res.status(400).send(errors)
-      res.status(200).json(response)
+      res.status(200).json(self)
     },
   }
 

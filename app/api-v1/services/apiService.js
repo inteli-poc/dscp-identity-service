@@ -1,20 +1,35 @@
 import { getMembers as getMembersUtil } from '../../util/appUtil.js'
 import { getMembersByAddressDb, createMemberAliasDb, updateMemberAliasDb, getMembersByAliasDb } from '../../db.js'
+import apiDoc from '../api-doc.js'
+
+export const addrRegex = new RegExp(apiDoc.components.schemas.Address.pattern)
+export const aliasRegex = new RegExp(apiDoc.components.schemas.Alias.pattern)
 
 export async function findMembers() {
   return getMembersUtil()
 }
 
-export async function getMembersByAlias(alias) {
-  return await getMembersByAliasDb({ alias })
+export async function getMemberByAlias(alias) {
+  const [member] = await getMembersByAliasDb({ alias })
+  return member
 }
 
-export async function getMembersByAddress(address) {
-  return await getMembersByAddressDb({ address })
+export async function getMemberByAddress(address) {
+  const [member] = await getMembersByAddressDb({ address })
+  if (member) return member
+
+  // if no alias in db, check if member is on-chain
+  const chainMembers = await getMembersUtil()
+  const validMembers = chainMembers.toJSON()
+  return validMembers.includes(address) ? { address: address, alias: address } : null
 }
 
 export async function putMemberAlias(address, { alias }) {
   const members = await getMembersByAddressDb({ address })
+
+  if (!aliasRegex.test(alias)) {
+    return { statusCode: 400, result: { message: 'invalid alias' } }
+  }
 
   // check members by address for matching address and alias or members by alias
   if ((members.length && members[0].alias === alias) || (await getMembersByAliasDb({ alias })).length) {
@@ -40,7 +55,7 @@ export async function putMemberAlias(address, { alias }) {
 
 export default {
   findMembers,
-  getMembersByAlias,
-  getMembersByAddress,
+  getMemberByAlias,
+  getMemberByAddress,
   putMemberAlias,
 }

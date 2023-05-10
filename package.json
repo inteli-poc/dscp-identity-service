@@ -1,6 +1,6 @@
 {
   "name": "@digicatapult/dscp-identity-service",
-  "version": "1.7.2",
+  "version": "1.9.3",
   "description": "Identity Service for DSCP",
   "type": "module",
   "main": "app/index.js",
@@ -11,16 +11,16 @@
     "depcheck": "depcheck",
     "start": "NODE_ENV=production node app/index.js",
     "dev": "NODE_ENV=development nodemon app/index.js | pino-colada",
-    "coverage": "LOG_LEVEL=fatal NODE_ENV=development nyc mocha --recursive ./test/integration --timeout 60000 --slow 20000 --exit",
-    "coverage:merge": "LOG_LEVEL=fatal NODE_ENV=development nyc --no-clean npm run test && nyc --no-clean npm run test:jwt && nyc merge .nyc_output --timeout 60000 --slow 20000 --exit"
+    "coverage": "LOG_LEVEL=fatal NODE_ENV=development c8 mocha --recursive ./test/integration --timeout 60000 --slow 20000 --exit",
+    "coverage:merge": "LOG_LEVEL=fatal NODE_ENV=development c8 --no-clean npm run test && c8 --no-clean npm run test:jwt && c8 merge .c8_output --timeout 60000 --slow 20000 --exit"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/digicatapult/dscp-identity-service.git"
   },
   "engines": {
-    "node": "16.x.x",
-    "npm": "8.x.x"
+    "node": ">=18.x.x",
+    "npm": ">=9.x.x"
   },
   "keywords": [
     "DSCP"
@@ -32,39 +32,41 @@
   },
   "homepage": "https://github.com/digicatapult/dscp-identity-service#readme",
   "dependencies": {
-    "@digicatapult/dscp-node": "^4.3.1",
-    "body-parser": "^1.20.1",
+    "@polkadot/api": "^10.5.1",
+    "body-parser": "^1.20.2",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "envalid": "^7.3.1",
     "express": "^4.18.2",
-    "express-openapi": "^12.0.2",
-    "jsonwebtoken": "^8.5.1",
-    "jwks-rsa": "^2.1.5",
-    "knex": "^2.3.0",
-    "openapi-response-validator": "^12.0.2",
-    "pg": "^8.8.0",
-    "pino": "^8.6.1",
-    "pino-http": "^8.2.1",
-    "swagger-ui-express": "^4.5.0"
+    "express-openapi": "^12.1.0",
+    "express-prom-bundle": "^6.6.0",
+    "jsonwebtoken": "^9.0.0",
+    "jwks-rsa": "^3.0.1",
+    "knex": "^2.4.2",
+    "openapi-response-validator": "^12.1.0",
+    "pg": "^8.10.0",
+    "pino": "^8.12.1",
+    "pino-http": "^8.3.3",
+    "prom-client": "^14.2.0",
+    "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.19.1",
-    "@babel/plugin-syntax-import-assertions": "^7.18.6",
-    "chai": "^4.3.6",
+    "@babel/eslint-parser": "^7.21.8",
+    "@babel/plugin-syntax-import-assertions": "^7.20.0",
+    "c8": "^7.13.0",
+    "chai": "^4.3.7",
     "chai-json": "^1.0.0",
     "depcheck": "^1.4.3",
-    "eslint": "^8.25.0",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint": "^8.40.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "mocha": "^10.1.0",
-    "mock-jwks": "^1.0.5",
-    "nock": "^13.2.9",
-    "nodemon": "^2.0.20",
-    "nyc": "^15.1.0",
+    "mocha": "^10.2.0",
+    "mock-jwks": "^2.0.3",
+    "nock": "^13.3.1",
+    "nodemon": "^2.0.22",
     "pino-colada": "^2.2.2",
-    "prettier": "^2.7.1",
-    "supertest": "^6.3.0"
+    "prettier": "^2.8.8",
+    "supertest": "^6.3.3"
   }
 }
